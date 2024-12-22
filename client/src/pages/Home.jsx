@@ -6,15 +6,14 @@ import Testimonials from '../components/Testimonials';
 import Upload from '../components/Upload';
 import Loading from '../components/Loading';
 import ResultPage from '../components/ResultPage';
-import { useUser, useAuth } from "@clerk/clerk-react";
 import { toast } from "react-toastify";
-import { apiRequest } from '../utils/api'; // Common API helper function
+import { useAuthContext } from '../context/AuthContext';
+import { apiRequest } from '../utils/api';
 
 const Home = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState(null);
-    const { isSignedIn } = useUser();
-    const { getToken } = useAuth();
+    const { isSignedIn, getToken } = useAuthContext();
 
     useEffect(() => {
         if (!isSignedIn) {

@@ -8,6 +8,7 @@ import Loading from '../components/Loading';
 import ResultPage from '../components/ResultPage';
 import { useUser, useAuth } from "@clerk/clerk-react";
 import { toast } from "react-toastify";
+import { apiRequest } from '../utils/api'; // Common API helper function
 
 const Home = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -34,21 +35,13 @@ const Home = () => {
         setIsLoading(true);
         try {
             const token = await getToken();
-
-            const response = await fetch('http://127.0.0.1:8000/upload/', {
+            const data = await apiRequest('http://127.0.0.1:8000/upload/', {
                 method: 'POST',
                 headers: token ? { 'Authorization': `Bearer ${token}` } : {},
                 body: formData,
             });
-
-            if (!response.ok) {
-                throw new Error(`API Hatası: ${response.status}`);
-            }
-
-            const data = await response.json();
             setResult(data);
         } catch (error) {
-            console.error('API isteği sırasında hata:', error.message);
             toast.error("API isteği başarısız oldu, lütfen tekrar deneyin.");
         } finally {
             setIsLoading(false);

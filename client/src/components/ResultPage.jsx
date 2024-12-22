@@ -1,6 +1,15 @@
 import React from 'react';
 
 const ResultPage = ({ result }) => {
+    if (!result || !result.imageUrl || !result.texts) {
+        return (
+            <div className="container mx-auto p-6 text-center">
+                <h1 className="text-3xl font-bold mb-6">Sonuçlar Bulunamadı</h1>
+                <p className="text-lg text-gray-700">Lütfen işlemi tekrar deneyin.</p>
+            </div>
+        );
+    }
+
     return (
         <div className="container mx-auto p-6 text-center">
             <h1 className="text-3xl font-bold mb-6">Sonuçlar</h1>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Steps from '../components/Steps';
 import Slider from '../components/Slider';
@@ -15,8 +15,13 @@ const Home = () => {
     const { isSignedIn } = useUser();
     const { getToken } = useAuth();
 
+    useEffect(() => {
+        if (!isSignedIn) {
+            toast.info("Giriş yapmadığınız için bazı özellikler kullanılamayabilir.");
+        }
+    }, [isSignedIn]);
+
     const handleApiRequest = async (file, description) => {
-        // Üyelik zorunlu, üye değilse işlemi durdur
         if (!isSignedIn) {
             toast.error("Lütfen devam etmek için giriş yapın.");
             return;
@@ -26,19 +31,13 @@ const Home = () => {
         formData.append('image', file);
         formData.append('description', description);
 
-        console.log("API'ye gönderilen FormData:", formData);
-
         setIsLoading(true);
         try {
-            // Backend'e auth header göndermek istiyorsak token alabiliriz:
             const token = await getToken();
 
             const response = await fetch('http://127.0.0.1:8000/upload/', {
                 method: 'POST',
-                headers: {
-                    // Eğer backend bu token'ı bekliyorsa uncomment edin:
-                    // 'Authorization': `Bearer ${token}`
-                },
+                headers: token ? { 'Authorization': `Bearer ${token}` } : {},
                 body: formData,
             });
 
@@ -47,11 +46,10 @@ const Home = () => {
             }
 
             const data = await response.json();
-            console.log("API Yanıtı:", data);
             setResult(data);
         } catch (error) {
             console.error('API isteği sırasında hata:', error.message);
-            alert("API isteği başarısız oldu, lütfen tekrar deneyin.");
+            toast.error("API isteği başarısız oldu, lütfen tekrar deneyin.");
         } finally {
             setIsLoading(false);
         }

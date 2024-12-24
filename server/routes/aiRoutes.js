@@ -2,65 +2,62 @@
 
 import express from 'express';
 import axios from 'axios';
-import path from 'path';
-import fs from 'fs';
-
-// Yeni importlar
 import authUser from '../middlewares/auth.js';
 import upload from '../middlewares/multer.js';
+import { generateChatGPTOutput } from '../controllers/openaiController.js';
 
 const router = express.Router();
 
 /**
- * 1) SCENARIO ROUTE
- *    Ürün açıklaması, opsiyonel arka plan açıklaması ve resmi alıp
- *    senaryoyu ayırt etmek, resmi geçici olarak `temp` klasörüne kaydetmek vb.
+ *  1) SCENARIO ROUTE
+ *     - Ürün açıklaması (productDescription)
+ *     - Opsiyonel arka plan açıklaması (backgroundDescription)
+ *     - Yüklenen resim (multer)
+ *     - ChatGPT'den title, description, stablePrompt, negativePrompt alıp dönüyoruz.
+ *       (Şimdilik Python'a resim göndermiyoruz; sadece ChatGPT çıktısı.)
  */
 router.post('/scenario', authUser, upload.single('image'), async (req, res) => {
   try {
     const { productDescription, backgroundDescription } = req.body;
 
-    // Basit bir validation
+    // Basit validation
     if (!productDescription || productDescription.trim().split(/\s+/).length < 3) {
       return res.json({
         success: false,
         message: 'Ürün açıklaması en az 3 kelime olmalıdır.'
       });
     }
-
     if (!req.file) {
       return res.json({ success: false, message: 'Resim yüklenmedi.' });
     }
 
-    // Arka plan açıklaması var mı yok mu -> senaryo tespiti
-    let scenarioType;
-    if (!backgroundDescription || !backgroundDescription.trim()) {
-      scenarioType = 1; // Sadece ürün açıklamasıyla
-    } else {
-      scenarioType = 2; // + backgroundDescription
-    }
+    // ChatGPT fonksiyonunu çağırıp title, description, stablePrompt, negativePrompt elde edelim.
+    const gptResult = await generateChatGPTOutput(productDescription, backgroundDescription);
+    // Bu gptResult bir JSON obje: { title, description, stablePrompt, negativePrompt }
 
-    console.log('Senaryo tespit edildi:', scenarioType);
-    console.log('Kaydedilen resim path:', req.file.path);
+    // Senaryo türü (backgroundDescription varsa 2, yoksa 1)
+    const scenarioType = backgroundDescription?.trim() ? 2 : 1;
 
-    // Burada henüz ChatGPT veya stableDiff yok. Sadece test amaçlı dönüyoruz.
+    // Şimdilik sadece ChatGPT çıktısını dönüyoruz.
+    // Sonraki adımlarda Python'a da istek atabilirsiniz.
     return res.json({
       success: true,
-      message: 'Senaryo işlendi, resim temp’e kaydedildi.',
-      scenarioType: scenarioType,
-      filePath: req.file.path
+      message: 'ChatGPT promptları oluşturuldu, resim temp’e kaydedildi.',
+      scenarioType,
+      filePath: req.file.path,
+      gptResult
     });
 
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ success: false, error: err.message });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, error: error.message });
   }
 });
 
 /**
- * 2) INPAINT ROUTE
- *    Python tarafına giden örnek route, proje kodunuzda zaten mevcuttu.
- *    Bunda değişiklik yapmıyoruz; olduğu gibi koruyacağız.
+ *  2) INPAINT ROUTE
+ *     - Python tarafındaki /generateImages endpoint’ine istek atar.
+ *     - prompt, negative_prompt, image_base64, num_images gönderir.
  */
 router.post('/inpaint', async (req, res) => {
   try {

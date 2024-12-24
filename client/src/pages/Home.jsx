@@ -11,59 +11,75 @@ import { useAuthContext } from '../context/AuthContext';
 import { apiRequest } from '../utils/api';
 
 const Home = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [result, setResult] = useState(null);
-    const { isSignedIn, getToken } = useAuthContext();
+  const [isLoading, setIsLoading] = useState(false);
+  const [result, setResult] = useState(null);
+  const { isSignedIn, getToken } = useAuthContext();
 
-    useEffect(() => {
-        if (!isSignedIn) {
-            toast.info("Giriş yapmadığınız için bazı özellikler kullanılamayabilir.");
-        }
-    }, [isSignedIn]);
+  useEffect(() => {
+    if (!isSignedIn) {
+      toast.info("Giriş yapmadığınız için bazı özellikler kullanılamayabilir.");
+    }
+  }, [isSignedIn]);
 
-    const handleApiRequest = async (file, description) => {
-        if (!isSignedIn) {
-            toast.error("Lütfen devam etmek için giriş yapın.");
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('description', description);
-
-        setIsLoading(true);
-        try {
-            const token = await getToken();
-            const data = await apiRequest('http://127.0.0.1:8000/upload/', {
-                method: 'POST',
-                headers: token ? { 'Authorization': `Bearer ${token}` } : {},
-                body: formData,
-            });
-            setResult(data);
-        } catch (error) {
-            toast.error("API isteği başarısız oldu, lütfen tekrar deneyin.");
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    if (isLoading) {
-        return <Loading />;
+  // FormData, Header.jsx'ten geliyor
+  const handleApiRequest = async (formData) => {
+    if (!isSignedIn) {
+      toast.error("Lütfen devam etmek için giriş yapın.");
+      return;
     }
 
-    if (result) {
-        return <ResultPage result={result} />;
-    }
+    setIsLoading(true);
 
-    return (
-        <>
-            <Header onSubmit={handleApiRequest} />
-            <Steps />
-            <Slider />
-            <Testimonials />
-            <Upload onSubmit={handleApiRequest} />
-        </>
-    );
+    try {
+      const token = await getToken();
+      // Örneğin: /api/ai/scenario
+      const url = `${import.meta.env.VITE_BACKEND_URL}/api/ai/scenario`;
+
+      const response = await apiRequest(url, {
+        method: 'POST',
+        headers: token ? { 'token': token } : {},
+        body: formData
+      });
+
+      if (!response.success) {
+        toast.error(response.message || "Beklenmeyen bir hata oluştu.");
+        return;
+      }
+
+      // Başarılı durumda: ileride ChatGPT veya stableDiff logic'i ekleneceğinde
+      // response içinden verileri alıp "result" olarak state'e koyabiliriz.
+      // Şimdilik basit bir örnek:
+      toast.success("İşlem başarıyla tamamlandı!");
+      setResult(response);
+
+    } catch (error) {
+      console.error(error);
+      toast.error("API isteği başarısız oldu, lütfen tekrar deneyin.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (result) {
+    // Burada result içeriğine göre ResultPage'e yönlendirebilirsiniz.
+    // Şimdilik basit örnek. result'ta stableDiff vs. yoksa
+    // sahte bir sayfa gösteriyoruz.
+    return <ResultPage result={result} />;
+  }
+
+  return (
+    <>
+      <Header onSubmit={handleApiRequest} />
+      <Steps />
+      <Slider />
+      <Testimonials />
+      <Upload onSubmit={handleApiRequest} />
+    </>
+  );
 };
 
 export default Home;

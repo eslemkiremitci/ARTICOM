@@ -6,12 +6,20 @@ const Header = ({ onSubmit }) => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleSubmit = () => {
+    // En az 3 kelime kontrolü ve resim yüklenmiş mi?
     if (productInfo.trim().split(' ').length < 3 || !selectedImage) {
       alert('Lütfen en az 3 kelimelik ürün bilgisi girin ve bir resim yükleyin.');
       return;
     }
 
-    onSubmit(selectedImage, productInfo);
+    // FormData oluşturup değerleri ekleyelim
+    const formData = new FormData();
+    formData.append('productDescription', productInfo);
+    formData.append('backgroundDescription', backgroundInfo);  // Opsiyonel olabilir
+    formData.append('image', selectedImage);
+
+    // Parent bileşendeki (Home.jsx) onSubmit fonksiyonuna gönder
+    onSubmit(formData);
   };
 
   return (
@@ -39,10 +47,10 @@ const Header = ({ onSubmit }) => {
               onChange={(e) => setProductInfo(e.target.value)}
               className="w-full p-5 mb-8 text-lg border rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
             />
-            {/* Arka Plan Tasarımı Input */}
+            {/* Arka Plan Tasarımı Input (isteğe bağlı) */}
             <input
               type="text"
-              placeholder="Arka plan tasarımı için birkaç kelime yazabilirsiniz (isteğe Bağlı)"
+              placeholder="Arka plan tasarımı için birkaç kelime yazabilirsiniz (isteğe bağlı)"
               value={backgroundInfo}
               onChange={(e) => setBackgroundInfo(e.target.value)}
               className="w-full p-5 mb-8 text-lg border rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
@@ -76,7 +84,7 @@ const Header = ({ onSubmit }) => {
 
         {/* -------- Sağ Taraf -------- */}
         <div className="flex-1 flex flex-col items-center gap-y-8 mt-8">
-          {/* Gif */}
+          {/* Burada örnek bir görsel veya gif kullanılabilir */}
           <div className="w-3/4 max-w-lg">
             <img
               src="resim.png"

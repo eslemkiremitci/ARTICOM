@@ -1,4 +1,3 @@
-// server.js
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
@@ -23,7 +22,9 @@ app.use('/api/image', imageRouter);
 app.use('/api/ai', aiRoutes);  // <--- Önemli!
 
 // Basit bir GET
-app.get('/', (req, res) => res.send("API Working"));
+app.get('/', (req, res) => {
+  res.send("API Working");
+});
 
 // Veritabanı bağlantısı ve sunucu başlatma
 try {

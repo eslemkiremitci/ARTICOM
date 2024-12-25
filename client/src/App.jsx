@@ -1,24 +1,29 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import Result from './pages/Result';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import BuyCredit from './pages/BuyCredit';
-import Layout from './components/Layout'; // Yeni Layout bileşenini ekledik
+
+// Sayfaları lazy olarak yüklüyoruz
+const Layout = lazy(() => import('./components/Layout'));
+const Home = lazy(() => import('./pages/Home'));
+const Result = lazy(() => import('./pages/Result'));
+const BuyCredit = lazy(() => import('./pages/BuyCredit'));
 
 const App = () => {
   return (
-    <div className='min-h-screen bg-slate-50'>
-      <ToastContainer position='bottom-right' />
-      <Routes>
-        {/* Layout altında render edilecek rotalar */}
-        <Route path='/' element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path='result' element={<Result />} />
-          <Route path='buy' element={<BuyCredit />} />
-        </Route>
-      </Routes>
+    <div className="min-h-screen bg-slate-50">
+      <ToastContainer position="bottom-right" />
+
+      {/* Lazy-loaded bileşenler için Suspense kullanıyoruz */}
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="result" element={<Result />} />
+            <Route path="buy" element={<BuyCredit />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </div>
   );
 };

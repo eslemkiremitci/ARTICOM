@@ -23,7 +23,7 @@ SD_INPAINT_MODEL = "runwayml/stable-diffusion-inpainting"
 CONTROLNET_DEPTH_MODEL = "lllyasviel/sd-controlnet-depth"
 
 GUIDANCE_SCALE = 10.0
-NUM_INFERENCE_STEPS = 100
+NUM_INFERENCE_STEPS = 50
 STRENGTH = 1.0
 MAX_WIDTH = 768
 

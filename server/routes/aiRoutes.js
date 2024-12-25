@@ -1,6 +1,7 @@
 // server/routes/aiRoutes.js
 
 import express from 'express';
+import fs from 'fs';
 import axios from 'axios';
 import authUser from '../middlewares/auth.js';
 import upload from '../middlewares/multer.js';
@@ -9,18 +10,16 @@ import { generateChatGPTOutput } from '../controllers/openaiController.js';
 const router = express.Router();
 
 /**
- *  1) SCENARIO ROUTE
- *     - Ürün açıklaması (productDescription)
- *     - Opsiyonel arka plan açıklaması (backgroundDescription)
- *     - Yüklenen resim (multer)
- *     - ChatGPT'den title, description, stablePrompt, negativePrompt alıp dönüyoruz.
- *       (Şimdilik Python'a resim göndermiyoruz; sadece ChatGPT çıktısı.)
+ * Tek istekte:
+ *  1) ChatGPT'den "title, description, stablePrompt, negativePrompt" alınır
+ *  2) Ardından Python inpaint sürecine giderek 2 adet görsel üretilir
+ *  3) Tüm veriler tek JSON cevabında gönderilir
  */
 router.post('/scenario', authUser, upload.single('image'), async (req, res) => {
   try {
     const { productDescription, backgroundDescription } = req.body;
 
-    // Basit validation
+    // 1) Basit Validation
     if (!productDescription || productDescription.trim().split(/\s+/).length < 3) {
       return res.json({
         success: false,
@@ -31,21 +30,48 @@ router.post('/scenario', authUser, upload.single('image'), async (req, res) => {
       return res.json({ success: false, message: 'Resim yüklenmedi.' });
     }
 
-    // ChatGPT fonksiyonunu çağırıp title, description, stablePrompt, negativePrompt elde edelim.
+    // 2) ChatGPT -> title, description, stablePrompt, negativePrompt
     const gptResult = await generateChatGPTOutput(productDescription, backgroundDescription);
-    // Bu gptResult bir JSON obje: { title, description, stablePrompt, negativePrompt }
+    // gptResult: { title, description, stablePrompt, negativePrompt }
 
-    // Senaryo türü (backgroundDescription varsa 2, yoksa 1)
+    // 3) Orijinal resmi base64'e çevir, Python'a göndereceğiz
+    const filePath = req.file.path;
+    const imageData = fs.readFileSync(filePath);
+    const base64Image = `data:${req.file.mimetype};base64,${imageData.toString('base64')}`;
+
+    // 4) Python inpaint endpointine istek at (2 resim üretelim)
+    const pyResponse = await axios.post('http://localhost:5000/generateImages', {
+      prompt: gptResult.stablePrompt,
+      negative_prompt: gptResult.negativePrompt,
+      image_base64: base64Image,
+      num_images: 2
+    });
+
+    // Python cevabında hata olup olmadığına bakalım
+    if (!pyResponse.data) {
+      throw new Error('Beklenmeyen yanıt: Python servisi boş data döndürdü.');
+    }
+    if (pyResponse.data.error) {
+      throw new Error(`Python hatası: ${pyResponse.data.error}`);
+    }
+    const generatedImages = pyResponse.data.images; // 2 adet base64 PNG
+
+    // 5) temp klasöründeki dosyayı siliyoruz
+    fs.unlinkSync(filePath);
+
+    // 6) Arka plan açıklaması varsa senaryo 2, yoksa 1 diyelim
     const scenarioType = backgroundDescription?.trim() ? 2 : 1;
 
-    // Şimdilik sadece ChatGPT çıktısını dönüyoruz.
-    // Sonraki adımlarda Python'a da istek atabilirsiniz.
+    // 7) Her şeyi tek JSON cevabında dönüyoruz
     return res.json({
       success: true,
-      message: 'ChatGPT promptları oluşturuldu, resim temp’e kaydedildi.',
+      message: 'Senaryo + Inpaint tamamlandı',
       scenarioType,
-      filePath: req.file.path,
-      gptResult
+      title: gptResult.title,
+      description: gptResult.description,
+      stablePrompt: gptResult.stablePrompt,
+      negativePrompt: gptResult.negativePrompt,
+      images: generatedImages
     });
 
   } catch (error) {
@@ -55,39 +81,9 @@ router.post('/scenario', authUser, upload.single('image'), async (req, res) => {
 });
 
 /**
- *  2) INPAINT ROUTE
- *     - Python tarafındaki /generateImages endpoint’ine istek atar.
- *     - prompt, negative_prompt, image_base64, num_images gönderir.
+ * Opsiyonel "inpaint" route
+ * Tek adım tercih edildiğinde kullanılmayabilir. 
  */
-router.post('/inpaint', async (req, res) => {
-  try {
-    // 1) Body'den verileri çek
-    const { prompt, negative_prompt, image_base64, num_images } = req.body;
-
-    // 2) Python API'ye istek at
-    const pyResponse = await axios.post('http://localhost:5000/generateImages', {
-      prompt,
-      negative_prompt,
-      image_base64,
-      num_images
-    });
-
-    // 3) Python’dan gelen yanıt
-    const data = pyResponse.data; // { images: [...]} veya { error: "..."}
-    if (data.images) {
-      // başarılı
-      return res.json({ success: true, images: data.images });
-    } else if (data.error) {
-      // python’dan hata dönmüş
-      return res.status(400).json({ success: false, error: data.error });
-    } else {
-      // beklenmeyen bir durum
-      return res.status(500).json({ success: false, error: 'Unknown error from Python' });
-    }
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ success: false, error: err.message });
-  }
-});
+// router.post('/inpaint', ... );
 
 export default router;

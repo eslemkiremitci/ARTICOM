@@ -1,49 +1,66 @@
-import React, { useContext } from 'react'
-import { AppContext } from '../context/AppContext'
-import { useNavigate } from 'react-router-dom'
+// Result.jsx (New Approach)
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Result = () => {
+  const navigate = useNavigate();
+  const [resultData, setResultData] = useState(null);
 
-  const navigate = useNavigate()
+  useEffect(() => {
+    const raw = localStorage.getItem('resultData');
+    if (raw) {
+      setResultData(JSON.parse(raw));
+    }
+  }, []);
 
-  const { resultImage, image } = useContext(AppContext)
+  if (!resultData) {
+    return (
+      <div className="p-6">
+        <p>Henüz bir sonuç yok. Lütfen önce işlem yapın.</p>
+      </div>
+    );
+  }
+
+  const { images, title, description, stablePrompt, negativePrompt } = resultData;
 
   return (
-    <div className='mx-4 my-3 lg:mx-44 mt-14 min-h-[75vh]'>
+    <div className="mx-4 my-3 lg:mx-44 mt-14 min-h-[75vh]">
+      <div className="bg-white rounded-lg px-8 py-6 drop-shadow-sm">
+        <h2 className="text-2xl font-bold mb-4">Oluşan Sonuçlar</h2>
+        <p><strong>Başlık:</strong> {title}</p>
+        <p><strong>Açıklama:</strong> {description}</p>
+        <p><strong>Stable Prompt:</strong> {stablePrompt}</p>
+        <p><strong>Negative Prompt:</strong> {negativePrompt}</p>
 
-      <div className='bg-white rounded-lg px-8 py-6 drop-shadow-sm'>
-
-        {/* --------- Images Container --------- */}
-        <div className='flex flex-col sm:grid grid-cols-2 gap-8'>
-
-          {/* --------- Left Side --------- */}
-          <div>
-            <p className='font-semibold text-gray-600 mb-2'>Original</p>
-            <img className='rounded-md border' src={image ? URL.createObjectURL(image) : ''} alt='' />
-          </div>
-
-          {/* --------- Right Side --------- */}
-          <div className='flex flex-col'>
-            <p className='font-semibold text-gray-600 mb-2'>Background Removed</p>
-            <div className='rounded-md border border-gray-300 h-full relative bg-layer'>
-              <img src={resultImage ? resultImage : ""} alt='' />
-              {!resultImage && image && <div className="absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2 ">
-                <div className="border-4 border-violet-600 rounded-full h-12 w-12 border-t-transparent animate-spin"></div>
-              </div>}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+          {images && images.map((img, index) => (
+            <div key={index} className="relative border rounded-md p-2">
+              <img src={img} alt={`Generated ${index}`} className="w-full h-auto" />
+              <a
+                href={img}
+                download={`generated_${index}.png`}
+                className="mt-2 inline-block text-blue-600 underline"
+              >
+                Download
+              </a>
             </div>
-          </div>
-
+          ))}
         </div>
 
-        {/* --------- Buttons --------- */}
-        {resultImage && <div className='flex justify-center sm:justify-end items-center flex-wrap gap-4 mt-6'>
-          <button onClick={() => navigate('/')} className='px-8 py-2.5 text-violet-600 text-sm border border-violet-600 rounded-full hover:scale-105 transition-all duration-700'>Try another image</button>
-          <a href={resultImage} className='px-8 py-2.5 text-white text-sm bg-gradient-to-r from-violet-600 to-fuchsia-500 rounded-full hover:scale-105 transition-all duration-700' download>Download image</a>
-        </div>}
-
+        <div className="flex justify-end items-center gap-4 mt-6">
+          <button
+            onClick={() => {
+              localStorage.removeItem('resultData');
+              navigate('/');
+            }}
+            className="px-8 py-2.5 text-violet-600 text-sm border border-violet-600 rounded-full hover:scale-105 transition-all duration-700"
+          >
+            Try another
+          </button>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Result
+export default Result;

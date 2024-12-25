@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useAuth } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
@@ -10,13 +10,22 @@ import SliderPage from '../components/Slider';
 import Testimonials from '../components/Testimonials';
 import Upload from '../components/Upload';
 
+// Loading bileşenini import ediyoruz
+import Loading from '../components/Loading';
+
 const Home = () => {
   const navigate = useNavigate();
   const { getToken } = useAuth(); // Clerk auth
 
+  // ------ LOADING STATE ------
+  const [isLoading, setIsLoading] = useState(false);
+
   // ----- Eski handleSubmit kodunu "handleHeaderSubmit" olarak uyarlıyoruz -----
   const handleHeaderSubmit = async (formData) => {
     try {
+      // Önce loading'i true yap
+      setIsLoading(true);
+
       // FormData içindeki değerleri okuyalım
       const productDescription = formData.get('productDescription');
       const backgroundDescription = formData.get('backgroundDescription');
@@ -25,10 +34,12 @@ const Home = () => {
       // Basit Kontrol
       if (!productDescription || productDescription.trim().split(' ').length < 3) {
         toast.error('Lütfen en az 3 kelimelik ürün açıklaması girin.');
+        setIsLoading(false);
         return;
       }
       if (!image || image.size === 0) {
         toast.error('Lütfen bir resim yükleyin.');
+        setIsLoading(false);
         return;
       }
 
@@ -45,19 +56,28 @@ const Home = () => {
       const data = await response.json();
       if (!data.success) {
         toast.error(data.message || data.error || 'Bir hata oluştu.');
+        setIsLoading(false);
         return;
       }
 
-      // Gelen veriyi localStorage'a kaydet
+      // Başarılıysa veriyi localStorage'a kaydet
       localStorage.setItem('resultData', JSON.stringify(data));
 
-      // /result sayfasına yönlendir
+      // isLoading'i kapat, result sayfasına yönlendir
+      setIsLoading(false);
       navigate('/result');
+
     } catch (err) {
       console.error(err);
       toast.error(err.message);
+      setIsLoading(false);
     }
   };
+
+  // isLoading == true ise <Loading /> gösteriyoruz
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="w-full flex flex-col">

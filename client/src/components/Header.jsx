@@ -4,104 +4,158 @@ const Header = ({ onSubmit }) => {
   const [productInfo, setProductInfo] = useState('');
   const [backgroundInfo, setBackgroundInfo] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [focusedField, setFocusedField] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (productInfo.trim().split(' ').length < 3) {
+      newErrors.productInfo = 'Ürün bilgisi alanı minimum 3 kelime olmalıdır.';
+    }
+    if (!selectedImage) {
+      newErrors.image = 'Bir resim yüklemelisiniz.';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = () => {
-    // En az 3 kelime kontrolü ve resim yüklenmiş mi?
-    if (productInfo.trim().split(' ').length < 3 || !selectedImage) {
-      alert('Lütfen en az 3 kelimelik ürün bilgisi girin ve bir resim yükleyin.');
-      return;
-    }
+    if (!validateForm()) return;
 
-    // FormData oluşturup değerleri ekleyelim
     const formData = new FormData();
     formData.append('productDescription', productInfo);
-    formData.append('backgroundDescription', backgroundInfo);  // Opsiyonel olabilir
+    formData.append('backgroundDescription', backgroundInfo);
     formData.append('image', selectedImage);
 
-    // Parent bileşendeki (Home.jsx) onSubmit fonksiyonuna gönder
     onSubmit(formData);
   };
 
-  return (
-    <div className="px-6 mt-16 lg:px-28 sm:mt-28">
-      {/* -------- Slogan -------- */}
-      <p className="text-blue-500 text-center mb-8 text-lg sm:text-xl">
-        E-ticaret içeriklerinizi yapay zeka ile yeniden tasarlayın!
-      </p>
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (!['image/jpeg', 'image/png'].includes(file.type)) {
+        setErrors((prev) => ({ ...prev, image: 'Yalnızca PNG veya JPG formatında resim yükleyin.' }));
+        return;
+      }
+      setSelectedImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
 
-      <div className="flex flex-col lg:flex-row items-start justify-between gap-y-16 lg:gap-x-16">
-        {/* -------- Sol Taraf -------- */}
-        <div className="flex-1">
-          <h1 className="text-5xl xl:text-6xl font-bold text-gray-800 leading-snug mb-12">
-            Ürünlerinizin hikayesini <br />
-            <span className="bg-gradient-to-r from-violet-600 to-fuchsia-500 bg-clip-text text-transparent">
-              En iyi şekilde anlatın!
-            </span>
-          </h1>
-          <div className="mt-6">
-            {/* Ürün Bilgisi Input */}
-            <input
-              type="text"
-              placeholder="Ürün ile ilgili açıklayıcı minimum üç kelime yazınız..."
-              value={productInfo}
-              onChange={(e) => setProductInfo(e.target.value)}
-              className="w-full p-5 mb-8 text-lg border rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
-            />
-            {/* Arka Plan Tasarımı Input (isteğe bağlı) */}
-            <input
-              type="text"
-              placeholder="Arka plan tasarımı için birkaç kelime yazabilirsiniz (isteğe bağlı)"
-              value={backgroundInfo}
-              onChange={(e) => setBackgroundInfo(e.target.value)}
-              className="w-full p-5 mb-8 text-lg border rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
-            />
-            {/* Butonlar */}
-            <div className="flex gap-8 mt-4">
-              <div>
+  return (
+    <div className="relative min-h-screen bg-white text-gray-800 px-6 py-16 lg:px-28">
+      {/* Blur Effektini Uygulayan Arka Plan */}
+      {focusedField && (
+        <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10"></div>
+      )}
+
+      {/* İçerik */}
+      <div className={`relative z-20 ${focusedField ? 'pointer-events-none' : ''}`}>
+        {/* -------- Slogan -------- */}
+        <p className="text-center text-lg sm:text-xl text-gray-600 mb-8 tracking-wide">
+          Zarif ve sade tasarım ile ürünlerinizi öne çıkarın.
+        </p>
+
+        <div className="flex flex-col lg:flex-row items-start justify-between gap-y-16 lg:gap-x-16">
+          {/* -------- Sol Taraf -------- */}
+          <div className="flex-1">
+            <h1 className="text-4xl xl:text-6xl font-semibold leading-tight mb-12 text-center lg:text-left">
+              Ürünlerinizi <br />
+              <span className="text-gray-800">Özenle Sunun</span>
+            </h1>
+
+            <div className="mt-6 space-y-6">
+              {/* Ürün Bilgisi Input */}
+              <div className="relative">
                 <input
-                  type="file"
-                  id="imageUpload"
-                  accept="image/*"
-                  onChange={(e) => setSelectedImage(e.target.files[0])}
-                  hidden
+                  type="text"
+                  placeholder="Ürün ile ilgili açıklayıcı minimum üç kelime yazınız..."
+                  value={productInfo}
+                  onChange={(e) => setProductInfo(e.target.value)}
+                  onFocus={() => setFocusedField('productInfo')}
+                  onBlur={() => setFocusedField(null)}
+                  className="w-full p-5 text-lg bg-gray-100 text-gray-800 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400 focus:shadow-lg transition-all"
                 />
-                <label
-                  htmlFor="imageUpload"
-                  className="inline-block bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white px-10 py-4 text-lg rounded-full cursor-pointer hover:scale-105 transition-all"
-                >
-                  Resim Yükle
-                </label>
+                {errors.productInfo && (
+                  <p className="text-red-500 text-sm mt-2">{errors.productInfo}</p>
+                )}
               </div>
-              <button
-                onClick={handleSubmit}
-                className="bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white px-10 py-4 text-lg rounded-full hover:scale-105 transition-all"
-              >
-                Oluştur
-              </button>
+
+              {/* Arka Plan Bilgisi Input */}
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Arka plan tasarımı için birkaç kelime yazabilirsiniz (isteğe bağlı)"
+                  value={backgroundInfo}
+                  onChange={(e) => setBackgroundInfo(e.target.value)}
+                  onFocus={() => setFocusedField('backgroundInfo')}
+                  onBlur={() => setFocusedField(null)}
+                  className="w-full p-5 text-lg bg-gray-100 text-gray-800 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400 focus:shadow-lg transition-all"
+                />
+              </div>
+
+              <div className="flex gap-8 mt-4 justify-center lg:justify-start">
+                <div>
+                  <input
+                    type="file"
+                    id="imageUpload"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    hidden
+                  />
+                  <label
+                    htmlFor="imageUpload"
+                    className="inline-block bg-gray-800 text-white px-10 py-4 text-lg rounded-lg cursor-pointer transition-transform hover:scale-105"
+                  >
+                    Resim Yükle
+                  </label>
+                  {errors.image && (
+                    <p className="text-red-500 text-sm mt-2">{errors.image}</p>
+                  )}
+                </div>
+                <button
+                  onClick={handleSubmit}
+                  className="bg-gray-800 text-white px-10 py-4 text-lg rounded-lg transition-transform hover:scale-105"
+                >
+                  Oluştur
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* -------- Sağ Taraf -------- */}
-        <div className="flex-1 flex flex-col items-center gap-y-8 mt-8">
-          {/* Burada örnek bir görsel veya gif kullanılabilir */}
-          <div className="w-3/4 max-w-lg">
-            <img
-              src="resim.png"
-              alt="Gif"
-              className="w-full rounded-lg shadow-lg"
-            />
-          </div>
-          {/* Tanıtıcı Yazı */}
-          <div className="text-gray-700 text-lg leading-relaxed text-center">
-            <h2 className="font-bold text-2xl mb-4">
-              Ürün görsellerinizi ve açıklamalarınızı kolayca iyileştirin!
-            </h2>
-            <ul className="list-disc pl-6 text-left">
-              <li>Arka plan değiştirme</li>
-              <li>Görsel kalitesini artırma</li>
-              <li>Açıklama ve ürün başlığı üretimi</li>
-            </ul>
+          {/* -------- Sağ Taraf -------- */}
+          <div className="flex-1 flex flex-col items-center gap-y-8">
+            <div className="w-3/4 max-w-md bg-gray-100 rounded-xl p-6 shadow-md border-2 border-gray-300">
+              {imagePreview ? (
+                <img
+                  src={imagePreview}
+                  alt="Seçilen Görsel"
+                  className="w-full rounded-xl shadow-sm"
+                />
+              ) : (
+                <p className="text-gray-600 text-center">Seçtiğiniz görsel burada görünecek.</p>
+              )}
+            </div>
+            <div className="text-lg leading-relaxed text-center text-gray-600">
+              <h2 className="font-semibold text-2xl mb-6 text-gray-700">
+                Basit ve Kullanışlı
+              </h2>
+              <ul className="list-none space-y-4">
+                <li className="flex items-center gap-3">
+                  <span className="bg-gray-800 w-4 h-4 rounded-full"></span>
+                  Arka plan değiştirme
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="bg-gray-800 w-4 h-4 rounded-full"></span>
+                  Görsel kalitesini artırma
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="bg-gray-800 w-4 h-4 rounded-full"></span>
+                  Ürün başlığı ve açıklama oluşturma
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react'; // Swiper bileşenlerini import ediyoruz
-import 'swiper/css'; // Swiper CSS
-import 'swiper/css/autoplay'; // Autoplay CSS
-import { Autoplay } from 'swiper/modules'; // Autoplay modülünü buradan import ediyoruz
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/autoplay';
+import 'swiper/css/thumbs';
+import { Autoplay, Thumbs } from 'swiper/modules';
 
 const Header = ({ onSubmit }) => {
   const [productInfo, setProductInfo] = useState('');
   const [backgroundInfo, setBackgroundInfo] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = () => {
-    if (productInfo.trim().split(' ').length < 3 || !selectedImage) {
-      alert('Lütfen en az 3 kelimelik ürün bilgisi girin ve bir resim yükleyin.');
+    const wordCount = productInfo.trim().split(' ').filter(Boolean).length;
+
+    if (wordCount < 3) {
+      setErrorMessage(`Eksik bilgi: ${3 - wordCount} kelime daha gerekli.`);
       return;
     }
+
+    if (!selectedImage) {
+      setErrorMessage('Lütfen bir resim yükleyin.');
+      return;
+    }
+
+    setErrorMessage('');
 
     const formData = new FormData();
     formData.append('productDescription', productInfo);
@@ -27,7 +39,7 @@ const Header = ({ onSubmit }) => {
   const images = Array.from({ length: 40 }, (_, index) => `/src/assets/slides/${index + 1}.jpg`);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white px-6 py-16 lg:px-28">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white px-6 py-16 lg:px-28 animate-gradient">
       <div className="flex flex-col lg:flex-row items-start justify-between gap-y-16 lg:gap-x-16">
         {/* -------- Sol Taraf -------- */}
         <div className="flex-1">
@@ -43,9 +55,17 @@ const Header = ({ onSubmit }) => {
               type="text"
               placeholder="Ürün ile ilgili açıklayıcı minimum üç kelime yazınız..."
               value={productInfo}
-              onChange={(e) => setProductInfo(e.target.value)}
+              onChange={(e) => {
+                setProductInfo(e.target.value);
+                setErrorMessage(''); // Hata mesajını sıfırla
+              }}
               className="w-full p-5 text-lg bg-gray-800 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-md"
             />
+            {productInfo.trim().split(' ').filter(Boolean).length < 3 && (
+              <p className="text-gray-400 text-sm mt-1">
+                {3 - productInfo.trim().split(' ').filter(Boolean).length} kelime daha gerekli.
+              </p>
+            )}
 
             <input
               type="text"
@@ -55,13 +75,16 @@ const Header = ({ onSubmit }) => {
               className="w-full p-5 text-lg bg-gray-800 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-md"
             />
 
-            <div className="flex gap-8 mt-4 justify-center lg:justify-start">
+            <div className="flex gap-8 justify-center lg:justify-start">
               <div>
                 <input
                   type="file"
                   id="imageUpload"
                   accept="image/*"
-                  onChange={(e) => setSelectedImage(e.target.files[0])}
+                  onChange={(e) => {
+                    setSelectedImage(e.target.files[0]);
+                    setErrorMessage(''); // Hata mesajını sıfırla
+                  }}
                   hidden
                 />
                 <label
@@ -71,6 +94,7 @@ const Header = ({ onSubmit }) => {
                   Resim Yükle
                 </label>
               </div>
+
               <button
                 onClick={handleSubmit}
                 className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-10 py-4 text-lg rounded-lg transition-transform hover:scale-110 hover:translate-y-1 shadow-lg shadow-md"
@@ -78,6 +102,20 @@ const Header = ({ onSubmit }) => {
                 Oluştur
               </button>
             </div>
+
+            {selectedImage && (
+              <div className="mt-6 flex justify-center">
+                <img
+                  src={URL.createObjectURL(selectedImage)}
+                  alt="Yüklenen Resim"
+                  className="w-40 h-40 object-cover rounded-lg border border-gray-500"
+                />
+              </div>
+            )}
+
+            {errorMessage && (
+              <p className="text-gray-400 text-center mt-4">{errorMessage}</p>
+            )}
           </div>
         </div>
 
@@ -88,12 +126,29 @@ const Header = ({ onSubmit }) => {
             slidesPerView={1}
             autoplay={{ delay: 3000 }}
             loop={true}
-            modules={[Autoplay]} // Autoplay modülünü buradan tanımlıyoruz
-            className="w-3/4 max-w-md rounded-xl shadow-2xl border border-gray-700"
+            modules={[Autoplay, Thumbs]}
+            className="w-full lg:w-3/4 max-w-lg rounded-xl shadow-2xl border border-gray-700"
+            thumbs={{ swiper: thumbsSwiper }}
           >
             {images.map((img, idx) => (
               <SwiperSlide key={idx}>
                 <img src={img} alt={`Slide ${idx + 1}`} className="w-full rounded-xl" />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* Thumbnail Swiper */}
+          <Swiper
+            onSwiper={setThumbsSwiper}
+            spaceBetween={10}
+            slidesPerView={5}
+            watchSlidesProgress
+            modules={[Thumbs]}
+            className="w-full max-w-lg"
+          >
+            {images.map((img, idx) => (
+              <SwiperSlide key={idx}>
+                <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full rounded-lg border border-gray-500" />
               </SwiperSlide>
             ))}
           </Swiper>

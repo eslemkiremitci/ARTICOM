@@ -76,16 +76,18 @@ const SliderPage = () => {
     ];
 
     return (
-        <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold text-center py-12">Ürün Görsellerinizi Nasıl Dönüştürdüğümüzü Görün</h1>
-            {sliderData.map((item, index) => (
-                <Slider
-                    key={index}
-                    title={item.title}
-                    description={item.description}
-                    reverse={item.reverse}
-                />
-            ))}
+        <div className="min-h-screen bg-[#111827] text-white">
+            <div className="container mx-auto px-4">
+                <h1 className="text-4xl font-bold text-center py-12">Ürün Görsellerinizi Nasıl Dönüştürdüğümüzü Görün</h1>
+                {sliderData.map((item, index) => (
+                    <Slider
+                        key={index}
+                        title={item.title}
+                        description={item.description}
+                        reverse={item.reverse}
+                    />
+                ))}
+            </div>
         </div>
     );
 };

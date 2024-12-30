@@ -35,19 +35,17 @@ const Header = ({ onSubmit }) => {
     onSubmit(formData);
   };
 
-  // Resimlerin yolu
   const images = Array.from({ length: 40 }, (_, index) => `/src/assets/slides/${index + 1}.jpg`);
 
   return (
     <div className="mt-16 min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white px-6 py-16 lg:px-28 animate-gradient">
-      {/* -------- Header İçeriği -------- */}
       <div className="flex flex-col lg:flex-row items-start justify-between gap-y-16 lg:gap-x-16">
-        {/* -------- Sol Taraf -------- */}
+        {/* Sol Taraf */}
         <div className="flex-1">
           <h1 className="text-5xl xl:text-7xl font-extrabold leading-tight mb-12 text-center lg:text-left">
             Ürünlerinizi <br />
             <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-              Baştan Yaratın
+              Baştan Yaratın!
             </span>
           </h1>
 
@@ -58,7 +56,7 @@ const Header = ({ onSubmit }) => {
               value={productInfo}
               onChange={(e) => {
                 setProductInfo(e.target.value);
-                setErrorMessage(''); // Hata mesajını sıfırla
+                setErrorMessage('');
               }}
               className="w-full p-5 text-lg bg-gray-800 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-md"
             />
@@ -84,7 +82,7 @@ const Header = ({ onSubmit }) => {
                   accept="image/*"
                   onChange={(e) => {
                     setSelectedImage(e.target.files[0]);
-                    setErrorMessage(''); // Hata mesajını sıfırla
+                    setErrorMessage('');
                   }}
                   hidden
                 />
@@ -104,23 +102,13 @@ const Header = ({ onSubmit }) => {
               </button>
             </div>
 
-            {selectedImage && (
-              <div className="mt-6 flex justify-center">
-                <img
-                  src={URL.createObjectURL(selectedImage)}
-                  alt="Yüklenen Resim"
-                  className="w-40 h-40 object-cover rounded-lg border border-gray-500"
-                />
-              </div>
-            )}
-
             {errorMessage && (
               <p className="text-gray-400 text-center mt-4">{errorMessage}</p>
             )}
           </div>
         </div>
 
-        {/* -------- Sağ Taraf -------- */}
+        {/* Sağ Taraf */}
         <div className="flex-1 flex justify-center items-center">
           <div className="flex flex-col items-center gap-y-8 w-full h-full justify-center">
             <Swiper
@@ -139,7 +127,6 @@ const Header = ({ onSubmit }) => {
               ))}
             </Swiper>
 
-            {/* Thumbnail Swiper */}
             <Swiper
               onSwiper={setThumbsSwiper}
               spaceBetween={10}
@@ -154,6 +141,18 @@ const Header = ({ onSubmit }) => {
                 </SwiperSlide>
               ))}
             </Swiper>
+
+            {/* Yüklenen Görselin Önizlemesi */}
+            {selectedImage && (
+              <div className="flex flex-col items-center mt-8 bg-white/10 backdrop-blur-md rounded-lg p-4 w-full max-w-md mx-auto">
+                <img
+                  src={URL.createObjectURL(selectedImage)}
+                  alt="Yüklenen Görsel"
+                  className="w-32 h-32 object-cover rounded-lg border border-gray-500"
+                />
+                <p className="text-lg text-gray-200 font-semibold mt-4">Yüklediğiniz Görsel</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -9,6 +9,9 @@
 /* Genel font ayarı */
 * {
   font-family: 'Outfit', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /* Slider düzenlemeleri */
@@ -52,7 +55,9 @@
 
 /* Gövdeye boşluk eklemek için */
 body {
-  padding-top: 80px; /* Navbar'ın yüksekliğiyle uyumlu */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /* Swiper özel tasarımları */

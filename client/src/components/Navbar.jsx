@@ -19,29 +19,43 @@ const Navbar = () => {
     return (
         <div 
             id="navbar-section" 
-            className="fixed top-0 w-full bg-[#2c2c2c] text-white py-5 px-24 lg:px-40 z-50 flex items-center justify-between"
+            className="fixed top-0 w-full bg-gray-900 text-white h-16 px-6 lg:px-28 z-50 flex items-center justify-between shadow-lg border-b border-gray-700"
         >
+            {/* Logo */}
             <Link to={'/'}>
-                <img className="w-36 sm:w-48" src={assets.logo} alt="Articom Logo" />
+                <img 
+                    className="w-32 sm:w-40 hover:scale-105 transition-transform duration-300" 
+                    src={assets.logo} 
+                    alt="Articom Logo" 
+                />
             </Link>
+
             {isSignedIn ? (
-                <div className="flex items-center gap-3 sm:gap-4">
+                <div className="flex items-center gap-4">
+                    {/* Kredi Butonu */}
                     <button 
                         onClick={() => navigate('/buy')} 
-                        className="flex items-center gap-2 bg-[#bdbdbd] px-5 sm:px-8 py-2 sm:py-3 rounded-full hover:scale-105 transition-all duration-700"
+                        className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-500 px-4 py-2 sm:px-6 sm:py-3 rounded-full hover:scale-105 transition-transform duration-300 shadow-md"
                     >
                         <img className="w-5" src={assets.credit_icon} alt="Credit Icon" />
-                        <p className="text-sm sm:text-base font-medium text-black">Kredi : {kredi}</p>
+                        <p className="text-sm sm:text-base font-medium text-white">Kredi: {kredi}</p>
                     </button>
-                    <p className="text-gray-300 max-sm:hidden">Merhaba, {user.fullName}</p>
+
+                    {/* Kullanıcı İsmi */}
+                    <p className="text-sm sm:text-base text-gray-300 hidden sm:block">
+                        Merhaba, {user.fullName}
+                    </p>
+
+                    {/* Kullanıcı Butonu */}
                     <UserButton />
                 </div>
             ) : (
                 <button 
                     onClick={() => openSignIn({})} 
-                    className="bg-white text-black flex items-center gap-4 px-5 py-2 sm:px-9 sm:py-4 text-sm rounded-full hover:scale-105 transition-all"
+                    className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white px-5 py-2 sm:px-7 sm:py-3 rounded-full hover:scale-105 transition-transform duration-300 shadow-md"
                 >
-                   Hadi Başla <img className="w-3 sm:w-4" src={assets.arrow_icon} alt="Arrow Icon" />
+                    Hadi Başla 
+                    <img className="w-4 sm:w-5" src={assets.arrow_icon} alt="Arrow Icon" />
                 </button>
             )}
         </div>

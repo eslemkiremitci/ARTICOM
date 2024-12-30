@@ -3,22 +3,31 @@ import { assets } from '../assets/assets';
 
 const Footer = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between gap-4 w-full px-24 lg:px-40 py-6 bg-[#2c2c2c] text-white">
+    <div className="flex flex-col lg:flex-row items-center justify-between gap-y-2 w-full px-4 lg:px-20 py-4 bg-gray-900 text-white shadow-lg border-t border-gray-700">
       {/* Logo */}
       <div className="flex items-center">
-        <img width={150} src={assets.logo} alt="Logo" />
+        <img
+          width={120}
+          src={assets.logo}
+          alt="Logo"
+          className="hover:scale-105 transition-transform duration-200"
+        />
       </div>
 
       {/* Telif Hakkı Metni */}
-      <p className="text-sm text-gray-400 text-center md:text-left">
-        © 2024 Articom Tüm hakları saklıdır.
+      <p className="text-xs text-gray-400 text-center lg:text-left">
+        © 2024{' '}
+        <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent font-semibold">
+          Articom
+        </span>{' '}
+        Tüm hakları saklıdır.
       </p>
 
       {/* İletişim */}
       <div className="text-center">
         <a
           href="mailto:eslemkiremitci2@gmail.com"
-          className="text-gray-300 hover:text-gray-500 text-sm"
+          className="text-gray-300 hover:text-purple-400 transition-colors duration-200 text-xs"
         >
           eslemkiremitci2@gmail.com
         </a>

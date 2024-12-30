@@ -39,7 +39,8 @@ const Header = ({ onSubmit }) => {
   const images = Array.from({ length: 40 }, (_, index) => `/src/assets/slides/${index + 1}.jpg`);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white px-6 py-16 lg:px-28 animate-gradient">
+    <div className="mt-16 min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white px-6 py-16 lg:px-28 animate-gradient">
+      {/* -------- Header İçeriği -------- */}
       <div className="flex flex-col lg:flex-row items-start justify-between gap-y-16 lg:gap-x-16">
         {/* -------- Sol Taraf -------- */}
         <div className="flex-1">

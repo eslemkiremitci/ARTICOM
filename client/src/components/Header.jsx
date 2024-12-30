@@ -121,38 +121,40 @@ const Header = ({ onSubmit }) => {
         </div>
 
         {/* -------- Sağ Taraf -------- */}
-        <div className="flex-1 flex flex-col items-center gap-y-8">
-          <Swiper
-            spaceBetween={20}
-            slidesPerView={1}
-            autoplay={{ delay: 3000 }}
-            loop={true}
-            modules={[Autoplay, Thumbs]}
-            className="w-full lg:w-3/4 max-w-lg rounded-xl shadow-2xl border border-gray-700"
-            thumbs={{ swiper: thumbsSwiper }}
-          >
-            {images.map((img, idx) => (
-              <SwiperSlide key={idx}>
-                <img src={img} alt={`Slide ${idx + 1}`} className="w-full rounded-xl" />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+        <div className="flex-1 flex justify-center items-center">
+          <div className="flex flex-col items-center gap-y-8 w-full h-full justify-center">
+            <Swiper
+              spaceBetween={20}
+              slidesPerView={1}
+              autoplay={{ delay: 3000 }}
+              loop={true}
+              modules={[Autoplay, Thumbs]}
+              className="w-full lg:w-3/4 max-w-lg rounded-xl shadow-2xl border border-gray-700"
+              thumbs={{ swiper: thumbsSwiper }}
+            >
+              {images.map((img, idx) => (
+                <SwiperSlide key={idx}>
+                  <img src={img} alt={`Slide ${idx + 1}`} className="w-full rounded-xl" />
+                </SwiperSlide>
+              ))}
+            </Swiper>
 
-          {/* Thumbnail Swiper */}
-          <Swiper
-            onSwiper={setThumbsSwiper}
-            spaceBetween={10}
-            slidesPerView={5}
-            watchSlidesProgress
-            modules={[Thumbs]}
-            className="w-full max-w-lg"
-          >
-            {images.map((img, idx) => (
-              <SwiperSlide key={idx}>
-                <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full rounded-lg border border-gray-500" />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+            {/* Thumbnail Swiper */}
+            <Swiper
+              onSwiper={setThumbsSwiper}
+              spaceBetween={10}
+              slidesPerView={5}
+              watchSlidesProgress
+              modules={[Thumbs]}
+              className="w-full max-w-lg"
+            >
+              {images.map((img, idx) => (
+                <SwiperSlide key={idx}>
+                  <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full rounded-lg border border-gray-500" />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         </div>
       </div>
     </div>

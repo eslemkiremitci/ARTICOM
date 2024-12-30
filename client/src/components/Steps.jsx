@@ -2,7 +2,7 @@ import React from 'react';
 
 const Steps = () => {
   return (
-    <div className="py-20 xl:py-40 bg-gradient-to-b from-black to-gray-900 text-white">
+    <div className="py-20 bg-gradient-to-b from-black to-gray-900 text-white">
       {/* Başlık */}
       <h1 className="text-center text-3xl md:text-4xl lg:text-5xl font-bold mb-10 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
         Articom Nasıl Kullanılır?

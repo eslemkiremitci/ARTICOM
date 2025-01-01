@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+// src/components/MusicPlayer.jsx
+import React, { useState, useRef, useEffect } from "react";
 import { FaMusic, FaVolumeDown, FaVolumeUp } from "react-icons/fa";
 import musicFile from "../assets/music/1.mp3";
 
@@ -7,19 +8,34 @@ const MusicPlayer = () => {
   const [volume, setVolume] = useState(0.5);
   const audioRef = useRef(null);
 
-  // Müzik oynatma/durdurma
+  // Sayfa açıldığında otomatik oynatmaya çalış (tarayıcı kısıtlaması olabilir)
+  useEffect(() => {
+    if (audioRef.current) {
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch(() => {
+            // Otomatik oynatmaya izin verilmezse kullanıcı butona basana kadar bekleyecek
+            setIsPlaying(false);
+          });
+      }
+    }
+  }, []);
+
   const togglePlayPause = () => {
     if (!audioRef.current) return;
-
     if (isPlaying) {
       audioRef.current.pause();
+      setIsPlaying(false);
     } else {
       audioRef.current.play();
+      setIsPlaying(true);
     }
-    setIsPlaying(!isPlaying);
   };
 
-  // Ses seviyesi ayarı
   const handleVolumeChange = (e) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
@@ -29,8 +45,8 @@ const MusicPlayer = () => {
   };
 
   return (
-    <div className="w-full relative bg-gray-800 text-white p-4 flex justify-center items-center shadow-md">
-      {/* Ortadaki buton ve metin */}
+    <div className="absolute top-4 left-0 w-full z-50 flex items-center justify-center bg-transparent">
+      {/* Ortada Play/Pause Butonu */}
       <div className="flex items-center gap-3">
         <button
           onClick={togglePlayPause}
@@ -39,12 +55,12 @@ const MusicPlayer = () => {
         >
           <FaMusic size={20} />
         </button>
-        <span className="text-sm">
+        <span className="text-sm text-white">
           {isPlaying ? "Durdur" : "Başlat"}
         </span>
       </div>
 
-      {/* Sağdaki ses kontrolü */}
+      {/* Ses Kontrolü - En Sağda */}
       <div className="absolute right-4 flex items-center gap-2">
         <FaVolumeDown size={16} />
         <input
@@ -54,7 +70,7 @@ const MusicPlayer = () => {
           step="0.01"
           value={volume}
           onChange={handleVolumeChange}
-          className="w-32 h-2 bg-gray-600 rounded-lg cursor-pointer"
+          className="w-24 h-2 bg-gray-600 rounded-lg cursor-pointer"
         />
         <FaVolumeUp size={16} />
       </div>

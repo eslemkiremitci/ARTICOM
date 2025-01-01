@@ -1,7 +1,8 @@
 // src/components/Loading.jsx
 import React, { useState, useEffect } from "react";
 import MusicPlayer from "./MusicPlayer"; // Müzik oynatıcı
-import SnakeGame from "./SnakeGame";     // Yılan Oyunu
+import SnakeGame from "./SnakeGame";     // Yeni Rock-Paper-Scissors oyunu
+
 import { FaBrain } from "react-icons/fa";
 
 const Loading = () => {
@@ -24,12 +25,11 @@ const Loading = () => {
   }, [progress]);
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gradient-to-b from-gray-800 to-black text-white">
-      {/* Üstte Müzik Çalar */}
+    <div className="relative flex flex-col items-center min-h-screen bg-gradient-to-b from-gray-800 to-black text-white">
+      {/* Müzik Çalar */}
       <MusicPlayer />
 
-      <div className="overflow-y-auto max-h-screen w-full px-4">
-        
+      <div className="overflow-y-auto max-h-screen w-full px-4 pt-16">
         {/* --- Geniş Blur Kutu (900px genişlik) --- */}
         <div className="mt-8 bg-gray-900 bg-opacity-80 p-8 rounded-lg shadow-lg w-[1300px] mx-auto text-center">
           <FaBrain className="text-purple-400 text-5xl mb-4 animate-bounce mx-auto" />
@@ -58,10 +58,10 @@ const Loading = () => {
           Yükleniyor: %{Math.round(progress)}
         </p>
 
-        {/* Alt Tarafta Yılan Oyunu */}
+        {/* Alt Tarafta Minik Oyun */}
         <div className="mt-10 flex flex-col items-center">
           <h2 className="text-xl font-bold text-gray-200 mb-4 text-center">
-            Beklerken Yılan Oyunu Oynamak İster misiniz? 🐍
+            Beklerken Minik Bir Oyun Oynamak İster misiniz?
           </h2>
 
           {/* 800×500 Pembe Kutu */}

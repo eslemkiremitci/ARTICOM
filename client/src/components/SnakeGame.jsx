@@ -1,106 +1,81 @@
 // src/components/SnakeGame.jsx
+import React, { useState } from "react";
 
-import React, { useState, useEffect } from "react";
+const CHOICES = ["Taş", "Kağıt", "Makas"];
 
 const SnakeGame = () => {
-  const gridSize = 30;
+  const [userChoice, setUserChoice] = useState(null);
+  const [computerChoice, setComputerChoice] = useState(null);
+  const [result, setResult] = useState("");
 
-  const [snake, setSnake] = useState([{ x: 5, y: 5 }]);
-  const [food, setFood] = useState({
-    x: Math.floor(Math.random() * gridSize),
-    y: Math.floor(Math.random() * gridSize),
-  });
-  const [direction, setDirection] = useState({ x: 0, y: 1 });
-  const [isGameOver, setIsGameOver] = useState(false);
+  const handleUserChoice = (choice) => {
+    const compChoice = CHOICES[Math.floor(Math.random() * 3)];
+    setUserChoice(choice);
+    setComputerChoice(compChoice);
 
-  useEffect(() => {
-    const moveSnake = () => {
-      setSnake((prevSnake) => {
-        const head = prevSnake[0];
-        const newHead = {
-          x: (head.x + direction.x + gridSize) % gridSize,
-          y: (head.y + direction.y + gridSize) % gridSize,
-        };
+    const outcome = determineWinner(choice, compChoice);
+    setResult(outcome);
+  };
 
-        // Kendine çarpma
-        const hitSelf = prevSnake.some(
-          (segment) => segment.x === newHead.x && segment.y === newHead.y
-        );
-        if (hitSelf) {
-          setIsGameOver(true);
-          return prevSnake;
-        }
+  // Taş-Kağıt-Makas kuralları
+  const determineWinner = (user, computer) => {
+    if (user === computer) {
+      return "Berabere!";
+    }
+    if (
+      (user === "Taş" && computer === "Makas") ||
+      (user === "Kağıt" && computer === "Taş") ||
+      (user === "Makas" && computer === "Kağıt")
+    ) {
+      return "Kazandınız!";
+    }
+    return "Kaybettiniz!";
+  };
 
-        // Yem kontrolü
-        if (newHead.x === food.x && newHead.y === food.y) {
-          setFood({
-            x: Math.floor(Math.random() * gridSize),
-            y: Math.floor(Math.random() * gridSize),
-          });
-          return [newHead, ...prevSnake];
-        }
-
-        // Normal hareket
-        return [newHead, ...prevSnake.slice(0, -1)];
-      });
-    };
-
-    // Interval 100 ms => daha hızlı hareket ve yön değişimi
-    const interval = setInterval(moveSnake, 100);
-    return () => clearInterval(interval);
-  }, [direction, food, gridSize]);
-
-  // Ok tuşları
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "ArrowUp" && direction.y !== 1) {
-        setDirection({ x: -1, y: 0 });
-      }
-      if (e.key === "ArrowDown" && direction.y !== -1) {
-        setDirection({ x: 1, y: 0 });
-      }
-      if (e.key === "ArrowLeft" && direction.x !== 1) {
-        setDirection({ x: 0, y: -1 });
-      }
-      if (e.key === "ArrowRight" && direction.x !== -1) {
-        setDirection({ x: 0, y: 1 });
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [direction]);
+  const resetGame = () => {
+    setUserChoice(null);
+    setComputerChoice(null);
+    setResult("");
+  };
 
   return (
-    <div className="relative w-full h-full bg-black text-white">
-      {isGameOver ? (
-        <p className="absolute inset-0 flex items-center justify-center text-red-500 font-bold text-xl">
-          Oyun Bitti! Skor: {snake.length - 1}
-        </p>
-      ) : (
-        <div
-          className="grid w-full h-full"
-          style={{
-            gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
-            gridTemplateRows: `repeat(${gridSize}, 1fr)`,
-          }}
-        >
-          {Array.from({ length: gridSize * gridSize }).map((_, i) => {
-            const x = Math.floor(i / gridSize);
-            const y = i % gridSize;
-            const isSnake = snake.some((seg) => seg.x === x && seg.y === y);
-            const isFood = x === food.x && y === food.y;
+    <div className="flex flex-col items-center justify-center w-full h-full bg-black text-white p-4">
+      <h2 className="text-2xl font-bold mb-6">Taş - Kağıt - Makas</h2>
 
-            let cellClass = "bg-gray-700";
-            if (isSnake) cellClass = "bg-green-500";
-            if (isFood) cellClass = "bg-red-500";
+      <div className="flex gap-4 mb-6">
+        {CHOICES.map((choice, idx) => (
+          <button
+            key={idx}
+            onClick={() => handleUserChoice(choice)}
+            className="bg-gray-700 px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors text-lg font-semibold"
+          >
+            {choice}
+          </button>
+        ))}
+      </div>
 
-            return (
-              <div key={i} className={`${cellClass} border border-gray-800`} />
-            );
-          })}
+      {/* Sonuç Görüntüleme */}
+      {userChoice && (
+        <div className="mb-4 text-center">
+          <p className="text-lg">
+            <span className="font-semibold">Sizin Seçiminiz:</span> {userChoice}
+          </p>
+          <p className="text-lg">
+            <span className="font-semibold">Bilgisayarın Seçimi:</span>{" "}
+            {computerChoice}
+          </p>
+          <p className="text-xl font-bold mt-2">
+            {result}
+          </p>
         </div>
       )}
+
+      <button
+        onClick={resetGame}
+        className="mt-4 px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full text-white hover:scale-105 transition-transform"
+      >
+        Yeniden Başlat
+      </button>
     </div>
   );
 };

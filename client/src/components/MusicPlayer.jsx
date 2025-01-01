@@ -8,19 +8,14 @@ const MusicPlayer = () => {
   const [volume, setVolume] = useState(0.5);
   const audioRef = useRef(null);
 
-  // Sayfa açıldığında otomatik oynatmaya çalış (tarayıcı kısıtlaması olabilir)
   useEffect(() => {
+    // Otomatik oynatmayı dene (tarayıcı kısıtlaması olabilir)
     if (audioRef.current) {
       const playPromise = audioRef.current.play();
       if (playPromise !== undefined) {
         playPromise
-          .then(() => {
-            setIsPlaying(true);
-          })
-          .catch(() => {
-            // Otomatik oynatmaya izin verilmezse kullanıcı butona basana kadar bekleyecek
-            setIsPlaying(false);
-          });
+          .then(() => setIsPlaying(true))
+          .catch(() => setIsPlaying(false));
       }
     }
   }, []);
@@ -45,24 +40,38 @@ const MusicPlayer = () => {
   };
 
   return (
-    <div className="absolute top-4 left-0 w-full z-50 flex items-center justify-center bg-transparent">
-      {/* Ortada Play/Pause Butonu */}
+    // Artık 'fixed' değil, normal bir DIV olarak akışta yer alıyor
+    <div
+      className="
+        relative mx-auto mt-8 w-fit
+        flex items-center gap-6
+        px-6 py-3
+        bg-black/60 rounded-full
+        shadow-xl backdrop-blur-md
+      "
+    >
+      {/* Play/Pause Butonu ve Durum Yazısı */}
       <div className="flex items-center gap-3">
         <button
           onClick={togglePlayPause}
-          className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full shadow-md text-white hover:scale-110 transition-transform"
+          className="
+            flex items-center justify-center w-10 h-10
+            bg-gradient-to-r from-purple-600 to-pink-500
+            rounded-full text-white hover:scale-105 transition-transform
+            shadow
+          "
           aria-label="Müzik oynat/durdur"
         >
           <FaMusic size={20} />
         </button>
-        <span className="text-sm text-white">
+        <span className="text-base text-white font-semibold">
           {isPlaying ? "Durdur" : "Başlat"}
         </span>
       </div>
 
-      {/* Ses Kontrolü - En Sağda */}
-      <div className="absolute right-4 flex items-center gap-2">
-        <FaVolumeDown size={16} />
+      {/* Ses Kontrolü */}
+      <div className="flex items-center gap-2 text-white">
+        <FaVolumeDown size={18} />
         <input
           type="range"
           min="0"
@@ -70,12 +79,16 @@ const MusicPlayer = () => {
           step="0.01"
           value={volume}
           onChange={handleVolumeChange}
-          className="w-24 h-2 bg-gray-600 rounded-lg cursor-pointer"
+          className="
+            w-28 h-2
+            bg-gray-300 rounded-lg cursor-pointer
+            accent-pink-500
+          "
         />
-        <FaVolumeUp size={16} />
+        <FaVolumeUp size={18} />
       </div>
 
-      {/* Audio Elemanı */}
+      {/* Audio Elemanı (görünmez) */}
       <audio ref={audioRef} src={musicFile} loop />
     </div>
   );

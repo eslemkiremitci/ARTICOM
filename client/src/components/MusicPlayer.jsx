@@ -7,7 +7,10 @@ const MusicPlayer = () => {
   const [volume, setVolume] = useState(0.5);
   const audioRef = useRef(null);
 
+  // Müzik oynatma/durdurma
   const togglePlayPause = () => {
+    if (!audioRef.current) return;
+
     if (isPlaying) {
       audioRef.current.pause();
     } else {
@@ -16,16 +19,19 @@ const MusicPlayer = () => {
     setIsPlaying(!isPlaying);
   };
 
+  // Ses seviyesi ayarı
   const handleVolumeChange = (e) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
-    audioRef.current.volume = newVolume;
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+    }
   };
 
   return (
-    <div className="w-full bg-gray-800 text-white p-4 flex items-center justify-between shadow-md">
-      {/* Müzik Aç/Kapat Butonu ve Durum Metni */}
-      <div className="flex items-center gap-4">
+    <div className="w-full relative bg-gray-800 text-white p-4 flex justify-center items-center shadow-md">
+      {/* Ortadaki buton ve metin */}
+      <div className="flex items-center gap-3">
         <button
           onClick={togglePlayPause}
           className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full shadow-md text-white hover:scale-110 transition-transform"
@@ -38,8 +44,8 @@ const MusicPlayer = () => {
         </span>
       </div>
 
-      {/* Ses Seviyesi Kontrolü */}
-      <div className="flex items-center gap-2">
+      {/* Sağdaki ses kontrolü */}
+      <div className="absolute right-4 flex items-center gap-2">
         <FaVolumeDown size={16} />
         <input
           type="range"

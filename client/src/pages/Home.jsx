@@ -3,97 +3,88 @@ import { toast } from 'react-toastify';
 import { useAuth } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 
-// Eski tasarım bileşenleri
+// Mevcut bileşen importları
 import Header from '../components/Header';
 import Steps from '../components/Steps';
 import SliderPage from '../components/Slider';
 import Testimonials from '../components/Testimonials';
 import Upload from '../components/Upload';
-
-// Loading bileşenini import ediyoruz
 import Loading from '../components/Loading';
 
 const Home = () => {
   const navigate = useNavigate();
   const { getToken } = useAuth(); // Clerk auth
 
-  // ------ LOADING STATE ------
+  // Loading ekranını kontrol eden state
   const [isLoading, setIsLoading] = useState(false);
 
-  // ----- Eski handleSubmit kodunu "handleHeaderSubmit" olarak uyarlıyoruz -----
+  // Header bileşenindeki form submit fonksiyonu
   const handleHeaderSubmit = async (formData) => {
-    try {
-      // Önce loading'i true yap
-      setIsLoading(true);
+    setIsLoading(true);
 
-      // FormData içindeki değerleri okuyalım
+    try {
+      // FormData içinden değerleri al
       const productDescription = formData.get('productDescription');
       const backgroundDescription = formData.get('backgroundDescription');
-      const image = formData.get('image'); // File tipinde
+      const image = formData.get('image'); // File tipinde (görsel)
 
-      // Basit Kontrol
+      // Basit Kontroller
       if (!productDescription || productDescription.trim().split(' ').length < 3) {
         toast.error('Lütfen en az 3 kelimelik ürün açıklaması girin.');
-        setIsLoading(false);
         return;
       }
       if (!image || image.size === 0) {
         toast.error('Lütfen bir resim yükleyin.');
-        setIsLoading(false);
         return;
       }
 
-      // Clerk token al
+      // Token al (Clerk)
       const token = await getToken();
 
-      // /api/ai/scenario endpointine POST
+      // Backend'e istek
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/ai/scenario`, {
         method: 'POST',
         headers: { token },
-        body: formData
+        body: formData,
       });
 
       const data = await response.json();
       if (!data.success) {
         toast.error(data.message || data.error || 'Bir hata oluştu.');
-        setIsLoading(false);
         return;
       }
 
-      // Başarılıysa veriyi localStorage'a kaydet
+      // Başarılıysa sonucun tamamını localStorage'a kaydet
       localStorage.setItem('resultData', JSON.stringify(data));
 
-      // isLoading'i kapat, result sayfasına yönlendir
-      setIsLoading(false);
+      // Sonuç sayfasına yönlendir
       navigate('/result');
 
-    } catch (err) {
-      console.error(err);
-      toast.error(err.message);
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message);
+
+    } finally {
+      // İster başarılı ister hatalı sonuçlansın, en sonda yüklenmeyi kapat
       setIsLoading(false);
     }
   };
 
-  // isLoading == true ise <Loading /> gösteriyoruz
+  // Ekranda "isLoading" true ise Loading bileşeni göster
   if (isLoading) {
     return <Loading />;
   }
 
+  // Normalde Home sayfası
   return (
     <div className="w-full flex flex-col">
-      {/* 1) Header (içinde form var) */}
+      {/* Ürün görsel & açıklama formu */}
       <Header onSubmit={handleHeaderSubmit} />
 
-      {/* 2) Steps */}
+      {/* Kullanıcıya ek kılavuzlar / demo bileşenleri */}
       <Steps />
-
-      {/* 3) Slider */}
       <SliderPage />
-
-      {/* 4) Testimonials */}
       <Testimonials />
-
-      {/* 5) Upload */}
       <Upload />
     </div>
   );

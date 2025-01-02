@@ -1,10 +1,10 @@
-// src/components/Loading.jsx
-import React, { useState, useEffect } from "react";
-import MusicPlayer from "./MusicPlayer";
-import SnakeGame from "./Game";
+import React, { useState, useEffect, useRef } from "react";
+import Game from "./Game";
 
 const Loading = () => {
   const [progress, setProgress] = useState(0);
+  const [contentHeight, setContentHeight] = useState(0);
+  const contentRef = useRef(null);
 
   // 1) 1 saniyede bir %1 artarak %98'e kadar yükselsin
   useEffect(() => {
@@ -22,22 +22,31 @@ const Loading = () => {
     }
   }, [progress]);
 
+  // Yazı alanının yüksekliğini ölç
+  useEffect(() => {
+    if (contentRef.current) {
+      setContentHeight(contentRef.current.offsetHeight);
+    }
+  }, []);
+
   return (
     <div className="relative flex flex-col items-center min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white">
-      {/* Müzik Çalar */}
-      <MusicPlayer />
-
-      <div className="overflow-y-auto max-h-screen w-full px-4 pt-20 pb-10">
-        
+      <div className="overflow-y-auto max-h-screen w-full px-4 pt-4 pb-10">
         {/* ----- Üstteki Büyük Kutu ----- */}
-        <div className="
-          mx-auto mt-10 w-full max-w-[1100px] 
-          bg-gradient-to-br from-[#1f1f1f]/60 via-[#262626]/60 to-[#1f1f1f]/60 
-          backdrop-blur-md border border-gray-700/50
-          rounded-2xl shadow-2xl 
-          px-8 py-10 sm:py-12 text-center
-          transition-all duration-500
-        ">
+        <div
+          ref={contentRef}
+          className={`
+            mx-auto mt-1 w-full max-w-[1300px] 
+            bg-gradient-to-br from-[#1f1f1f]/60 via-[#262626]/60 to-[#1f1f1f]/60 
+            backdrop-blur-md border border-gray-700/50
+            rounded-2xl shadow-2xl 
+            px-8 py-10 sm:py-12 text-center
+            transition-all duration-500
+          `}
+          style={{
+            minHeight: `${contentHeight}px`, // Yazıya göre genişlesin
+          }}
+        >
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-8 drop-shadow-lg">
             Stable Diffusion &amp; ControlNet İşlem Süreci
           </h1>
@@ -52,7 +61,7 @@ const Loading = () => {
         </div>
 
         {/* ----- Yüklenme Barı ----- */}
-        <div className="mt-10 w-full flex flex-col items-center">
+        <div className="mt-4 w-full flex flex-col items-center">
           <div className="w-4/5 sm:w-2/3 md:w-1/2 h-4 bg-gray-700 rounded-full overflow-hidden shadow-lg">
             <div
               className="bg-gradient-to-r from-purple-500 to-pink-500 h-full transition-all duration-300"
@@ -71,15 +80,17 @@ const Loading = () => {
           </h2>
 
           {/* Oyun Kutusu */}
-          <div className="
+          <div
+            className="
             w-[90%] max-w-[800px] 
             bg-gradient-to-tr from-[#2c2c2c] to-[#3b3b3b] 
             rounded-xl shadow-xl border border-gray-700/50
             flex items-center justify-center
             overflow-hidden
-          ">
+          "
+          >
             <div className="w-full h-full p-4 sm:p-6 md:p-8">
-              <SnakeGame />
+              <Game />
             </div>
           </div>
         </div>

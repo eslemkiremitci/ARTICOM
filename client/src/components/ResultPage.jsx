@@ -34,43 +34,51 @@ const ResultPage = () => {
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white px-6 py-12">
             {/* Resim Galerisi */}
-            <div className="flex flex-wrap justify-center gap-6 mb-12">
-                {images.map((imageUrl, index) => (
-                    <div key={index} className="w-full sm:w-1/2 lg:w-1/3 relative bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                {images.slice(0, 2).map((imageUrl, index) => (
+                    <div key={index} className="relative bg-gray-800 rounded-lg overflow-hidden shadow-lg">
                         <img
                             src={imageUrl}
                             alt={`Sonuç Görseli ${index + 1}`}
-                            className="w-full h-full object-cover rounded-lg"
+                            className="w-full h-64 object-cover"
                         />
-                        <a
-                            href={imageUrl}
-                            download={`result_${index}.png`}
-                            className="absolute bottom-2 right-2 bg-gray-800 bg-opacity-80 text-sm text-white px-3 py-1 rounded hover:bg-opacity-100 transition"
-                        >
-                            İndir
-                        </a>
+                        <div className="absolute bottom-4 left-4 flex items-center gap-4">
+                            <button
+                                className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-4 py-2 rounded-full text-sm shadow-md hover:scale-105 transition-transform"
+                                onClick={() => navigator.clipboard.writeText(imageUrl)}
+                            >
+                                Kopyala
+                            </button>
+                            <a
+                                href={imageUrl}
+                                download={`result_${index}.png`}
+                                className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-4 py-2 rounded-full text-sm shadow-md hover:scale-105 transition-transform"
+                            >
+                                İndir
+                            </a>
+                        </div>
                     </div>
                 ))}
             </div>
 
             {/* Çıktılar */}
-            <div className="flex flex-col items-center text-center">
-                <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+            <div className="flex flex-col items-center text-center bg-gray-800 bg-opacity-80 backdrop-blur-lg rounded-lg p-8 shadow-lg">
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent mb-6">
                     Çıktılar
                 </h1>
-                <div className="w-full max-w-4xl text-lg text-gray-300 space-y-4">
-                    <div className="p-4 bg-gray-800 bg-opacity-80 backdrop-blur-md rounded-lg shadow-lg">
+                <div className="w-full max-w-4xl grid grid-cols-1 gap-6">
+                    <div className="p-6 bg-gray-700 bg-opacity-90 rounded-lg shadow-lg">
                         <h3 className="font-bold mb-2 text-gray-200">Başlık</h3>
-                        <p>{title}</p>
+                        <p className="text-gray-300">{title}</p>
                     </div>
-                    <div className="p-4 bg-gray-800 bg-opacity-80 backdrop-blur-md rounded-lg shadow-lg">
+                    <div className="p-6 bg-gray-700 bg-opacity-90 rounded-lg shadow-lg">
                         <h3 className="font-bold mb-2 text-gray-200">Açıklama</h3>
-                        <p>{description}</p>
+                        <p className="text-gray-300">{description}</p>
                     </div>
                     {texts.map((text, index) => (
-                        <div key={index} className="p-4 bg-gray-800 bg-opacity-80 backdrop-blur-md rounded-lg shadow-lg">
+                        <div key={index} className="p-6 bg-gray-700 bg-opacity-90 rounded-lg shadow-lg">
                             <h3 className="font-bold mb-2 text-gray-200">Metin Çıktısı {index + 1}</h3>
-                            <p>{text}</p>
+                            <p className="text-gray-300">{text}</p>
                         </div>
                     ))}
                 </div>

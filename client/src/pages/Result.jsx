@@ -1,13 +1,12 @@
-// Result.jsx (New, Enhanced Design)
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Result = () => {
   const navigate = useNavigate();
   const [resultData, setResultData] = useState(null);
 
   useEffect(() => {
-    const raw = localStorage.getItem('resultData');
+    const raw = localStorage.getItem("resultData");
     if (raw) {
       setResultData(JSON.parse(raw));
     }
@@ -15,130 +14,120 @@ const Result = () => {
 
   if (!resultData) {
     return (
-      <div className="p-6">
-        <p>Henüz bir sonuç yok. Lütfen önce işlem yapın.</p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white">
+        <h1 className="text-4xl font-bold mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+          Sonuçlar Bulunamadı
+        </h1>
+        <p className="text-lg text-gray-300">Lütfen işlemi tekrar deneyin.</p>
+        <button
+          onClick={() => navigate("/")}
+          className="mt-6 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300"
+        >
+          Ana Sayfaya Dön
+        </button>
       </div>
     );
   }
 
-  // Aldığımız verileri parçalayalım
   const { images, title, description, stablePrompt, negativePrompt } = resultData;
 
-  // Kopyalama fonksiyonu
   const handleCopy = (text) => {
-    navigator.clipboard.writeText(text)
-      .then(() => {
-        // Örneğin react-toastify kullanmak istersen:
-        // toast.success("Copied!");
-        console.log("Copied!");
-      })
-      .catch(err => console.error("Clipboard copy failed", err));
+    navigator.clipboard.writeText(text).then(() => {
+      console.log("Copied!");
+    });
   };
 
   return (
-    <div className="mx-4 my-3 lg:mx-44 mt-14 min-h-[75vh]">
-      <div className="bg-white rounded-lg px-8 py-6 drop-shadow-sm">
-        
-        {/* Başlık */}
-        <h2 className="text-3xl font-bold mb-8">
-          Sonuçlar
-        </h2>
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-800 text-white px-6 py-12 space-y-12">
+      {/* Görseller */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {images.map((img, index) => (
+          <div key={index} className="relative group rounded-lg overflow-hidden shadow-lg">
+            <img
+              src={img}
+              alt={`Generated ${index}`}
+              className="w-full h-full object-cover transition-transform transform group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <a
+                href={img}
+                download={`generated_${index}.png`}
+                className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-2 rounded-lg text-sm font-semibold shadow-lg hover:scale-105 transform transition"
+              >
+                İndir
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
 
-        {/* ------- Metin Blokları ------- */}
-        <div className="flex flex-col gap-6">
-
+      {/* Metinler */}
+      <div className="bg-gray-800 bg-opacity-80 backdrop-blur-lg rounded-lg p-10 shadow-lg">
+        <h1 className="text-4xl font-bold text-center mb-6 bg-gradient-to-r from-green-500 to-cyan-500 bg-clip-text text-transparent">
+          Çıktılar
+        </h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Title */}
-          <div className="p-4 border rounded-lg bg-gray-50 relative">
-            <h3 className="font-semibold text-gray-700 mb-2">Başlık (title)</h3>
-            <p className="text-gray-800">
-              {title}
-            </p>
+          <div className="p-6 bg-gray-700 bg-opacity-90 rounded-lg shadow-lg">
+            <h3 className="font-bold text-lg text-gray-300 mb-2">Başlık</h3>
+            <p className="text-gray-100">{title}</p>
             <button
               onClick={() => handleCopy(title)}
-              className="absolute top-2 right-2 text-sm text-blue-500 underline hover:text-blue-700"
+              className="mt-3 text-sm bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
             >
               Kopyala
             </button>
           </div>
 
           {/* Description */}
-          <div className="p-4 border rounded-lg bg-gray-50 relative">
-            <h3 className="font-semibold text-gray-700 mb-2">Açıklama (description)</h3>
-            <p className="text-gray-800 leading-relaxed">
-              {description}
-            </p>
+          <div className="p-6 bg-gray-700 bg-opacity-90 rounded-lg shadow-lg">
+            <h3 className="font-bold text-lg text-gray-300 mb-2">Açıklama</h3>
+            <p className="text-gray-100">{description}</p>
             <button
               onClick={() => handleCopy(description)}
-              className="absolute top-2 right-2 text-sm text-blue-500 underline hover:text-blue-700"
+              className="mt-3 text-sm bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
             >
               Kopyala
             </button>
           </div>
 
           {/* Stable Prompt */}
-          <div className="p-4 border rounded-lg bg-gray-50 relative">
-            <h3 className="font-semibold text-gray-700 mb-2">Stable Prompt (English)</h3>
-            <p className="text-gray-800">
-              {stablePrompt}
-            </p>
+          <div className="p-6 bg-gray-700 bg-opacity-90 rounded-lg shadow-lg">
+            <h3 className="font-bold text-lg text-gray-300 mb-2">Stable Prompt</h3>
+            <p className="text-gray-100">{stablePrompt}</p>
             <button
               onClick={() => handleCopy(stablePrompt)}
-              className="absolute top-2 right-2 text-sm text-blue-500 underline hover:text-blue-700"
+              className="mt-3 text-sm bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
             >
-              Copy Prompt
+              Copy
             </button>
           </div>
 
           {/* Negative Prompt */}
-          <div className="p-4 border rounded-lg bg-gray-50 relative">
-            <h3 className="font-semibold text-gray-700 mb-2">Negative Prompt (English)</h3>
-            <p className="text-gray-800">
-              {negativePrompt}
-            </p>
+          <div className="p-6 bg-gray-700 bg-opacity-90 rounded-lg shadow-lg">
+            <h3 className="font-bold text-lg text-gray-300 mb-2">Negative Prompt</h3>
+            <p className="text-gray-100">{negativePrompt}</p>
             <button
               onClick={() => handleCopy(negativePrompt)}
-              className="absolute top-2 right-2 text-sm text-blue-500 underline hover:text-blue-700"
+              className="mt-3 text-sm bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
             >
-              Copy Prompt
+              Copy
             </button>
           </div>
         </div>
+      </div>
 
-        {/* ------- Görseller ------- */}
-        <div className="mt-10">
-          <h3 className="text-xl font-bold mb-4">Üretilen Görseller</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {images && images.map((img, index) => (
-              <div key={index} className="border rounded-lg p-2 overflow-hidden bg-gray-50">
-                <img
-                  src={img}
-                  alt={`Generated ${index}`}
-                  className="w-full h-auto rounded-md shadow-sm"
-                />
-                <a
-                  href={img}
-                  download={`generated_${index}.png`}
-                  className="mt-2 inline-block text-blue-600 underline text-sm"
-                >
-                  Download
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ------- Butonlar (Try Another) ------- */}
-        <div className="flex justify-end mt-8">
-          <button
-            onClick={() => {
-              localStorage.removeItem('resultData');
-              navigate('/');
-            }}
-            className="bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white px-8 py-3 rounded-full font-semibold hover:scale-105 transition-all duration-700"
-          >
-            Yeni Bir Deneme
-          </button>
-        </div>
+      {/* Yeni Deneme Butonu */}
+      <div className="flex justify-center">
+        <button
+          onClick={() => {
+            localStorage.removeItem("resultData");
+            navigate("/");
+          }}
+          className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-10 py-4 rounded-full font-semibold hover:scale-105 transition-all duration-700 shadow-lg"
+        >
+          Yeni Bir Deneme Yap
+        </button>
       </div>
     </div>
   );

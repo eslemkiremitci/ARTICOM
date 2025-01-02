@@ -1,63 +1,65 @@
-import React, { useContext } from 'react'
-import { assets } from '../assets/assets'
-import { useAuth } from '@clerk/clerk-react'
-import { toast } from 'react-toastify'
-import axios from 'axios'
-import { AppContext } from '../context/AppContext'
-import { useNavigate } from 'react-router-dom'
-import { plans } from '../assets/assets'
+import React, { useContext } from 'react';
+import { assets } from '../assets/assets';
+import { useAuth } from '@clerk/clerk-react';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { AppContext } from '../context/AppContext';
+import { useNavigate } from 'react-router-dom';
+import { plans } from '../assets/assets';
 
 const BuyCredit = () => {
-
-  const { backendUrl, loadCreditsData } = useContext(AppContext)
-  const navigate = useNavigate()
-  const { getToken } = useAuth()
+  const { backendUrl, loadCreditsData } = useContext(AppContext);
+  const navigate = useNavigate();
+  const { getToken } = useAuth();
 
   const paymentTest = async (planId) => {
     try {
-      const token = await getToken()
-      const { data } = await axios.post(backendUrl + '/api/user/pay-test', { planId }, { headers: { token } })
+      const token = await getToken();
+      const { data } = await axios.post(backendUrl + '/api/user/pay-test', { planId }, { headers: { token } });
 
       if (data.success) {
-        // Ödeme başarılı ise krediyi güncelle ve anasayfaya dön
-        loadCreditsData()
-        navigate('/')
+        loadCreditsData();
+        navigate('/');
       } else {
-        toast.error(data.message)
+        toast.error(data.message);
       }
-
     } catch (error) {
-      console.log(error)
-      toast.error(error.message)
+      console.log(error);
+      toast.error(error.message);
     }
-  }
+  };
 
   return (
-    <div className='min-h-[80vh] text-center pt-14 mb-10'>
-      <button className='border border-gray-400 px-10 py-2 rounded-full mb-6'>Planlarımız</button>
-      <h1 className='text-center mb-6 sm:mb-10 text-2xl md:text-3xl lg:text-4xl font-semibold bg-gradient-to-r from-gray-900 to-gray-400 bg-clip-text text-transparent'>
-        Size uygun planı seçin
+    <div className="min-h-[80vh] text-center pt-14 mb-10 bg-gradient-to-b from-gray-900 to-black">
+      <div className="text-gray-400 text-lg mb-6 font-semibold">
+        Planlarımız
+      </div>
+      <h1 className="text-center mb-6 sm:mb-10 text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-400">
+        Size Uygun Planı Seçin
       </h1>
-      <div className='flex flex-wrap justify-center gap-6 text-left'>
+      <div className="flex flex-wrap justify-center gap-6 text-left">
         {plans.map((item, index) => (
-          <div className='bg-white drop-shadow-sm border rounded-lg py-12 px-8 text-gray-700 hover:scale-105 transition-all duration-500' key={index}>
-            <img width={40} src={assets.logo_icon} alt='' />
-            <p className='mt-3 font-semibold'>{item.id}</p>
-            <p className='text-sm'>{item.desc}</p>
-            <p className='my-6'>
-              <span className='tex3xl font-medium'>₺{item.price} </span>/ {item.credits} kredi
+          <div
+            className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-2xl p-8 w-[65%] max-w-sm text-white shadow-xl transform hover:scale-105 transition-transform duration-500"
+            key={index}
+          >
+            <img width={60} src={assets.logo_icon} alt="" className="mb-6" />
+            <p className="text-xl font-bold mb-2 text-purple-300">{item.id}</p>
+            <p className="text-sm text-gray-400 mb-4">{item.desc}</p>
+            <p className="text-xl font-bold text-[#d1d5db] mb-6">
+              ₺{item.price} <span className="text-lg text-[#d1d5db]">/ {item.credits} kredi</span>
             </p>
-            <div className='flex flex-col'>
-              {/* Eski Razorpay ve Stripe butonları kaldırıldı. Sadece test ödeme butonu ekledik */}
-              <button onClick={() => paymentTest(item.id)} className='w-full flex justify-center gap-2 border border-gray-400 mt-2 text-sm rounded-md py-2.5 min-w-52 hover:bg-blue-50 hover:border-blue-400'>
-                Test Ödemesi Yap
-              </button>
-            </div>
+            <button
+              onClick={() => paymentTest(item.id)}
+              className="w-full py-2 text-sm font-semibold rounded-md bg-purple-300 text-gray-900 hover:bg-purple-400 hover:scale-105 transition-all duration-300"
+            >
+              Satın Al
+            </button>
           </div>
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default BuyCredit
+export default BuyCredit;

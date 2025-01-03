@@ -1,19 +1,16 @@
 import React from 'react';
-import imageWoBg from '../assets/image_wo_bg.png';
+import imageWoBg from '../assets/1.png';
+import logoIcon from '../assets/logo_icon.svg';
 
 const Testimonials = () => {
   const testimonialsData = [
     {
-      name: 'Eslem Kiremitci',
-      profession: 'Bilgisayar Mühendisi Öğrencisi',
-      text: `Lorem Ipsum, basım ve dizgi endüstrisinin sahte metnidir. Lorem Ipsum, bilinmeyen bir matbaacının bir yazı dizisini alıp bir yazı örneği kitabı oluşturmak için karıştırdığı 1500'lerden bu yana endüstri standardı kukla metin olmuştur.`,
+      text: `Stable Diffusion, Stability AI tarafından geliştirilen bir açık kaynaklı görüntü oluşturma modelidir. Bu model, derin öğrenme teknikleri ve sinir ağları kullanarak metin açıklamalarından yüksek kaliteli görüntüler oluşturabilir. Daha fazla bilgi için resmi web sitesi: `,
       link: 'https://stability.ai/',
     },
     {
-      name: 'Muhammed Ali Uyanık',
-      profession: 'Bilgisayar Mühendisi Öğrencisi',
-      text: `Lorem Ipsum, basım ve dizgi endüstrisinin sahte metnidir. Lorem Ipsum, bilinmeyen bir matbaacının bir yazı dizisini alıp bir yazı örneği kitabı oluşturmak için karıştırdığı 1500'lerden bu yana endüstri standardı kukla metin olmuştur.`,
-      link: 'https://stability.ai/',
+      text: `Stable Diffusion’un yapay zeka gücünü ARTICOM’a entegre ederek, kullanıcılarımızın en iyi görsel sonuçları elde etmesini sağlıyoruz. Arka plan tasarımlarından detaylı görsellere kadar her şey bu teknolojiyle mümkün!`,
+      name: 'ARTICOM Ekibi',
     },
   ];
 
@@ -34,7 +31,7 @@ const Testimonials = () => {
               <div className="flex flex-row items-center gap-4">
                 {/* Image */}
                 <img
-                  src={imageWoBg}
+                  src={index === 1 ? logoIcon : imageWoBg} // 2. yorum için logo_icon.svg eklendi
                   alt="User"
                   className="w-24 h-24 object-cover rounded-lg"
                 />
@@ -42,14 +39,16 @@ const Testimonials = () => {
                 <div className="flex-1">
                   <p className="text-gray-300 leading-relaxed mb-3">
                     {item.text}{' '}
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-400 underline"
-                    >
-                      stability.ai git
-                    </a>
+                    {item.link && (
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400 underline"
+                      >
+                        stability.ai git
+                      </a>
+                    )}
                   </p>
                   <div>
                     <p className="font-semibold text-gray-100">{item.name}</p>

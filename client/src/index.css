@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-@import "swiper/swiper-bundle.css"; /* Tek ve doğru Swiper CSS yolu */
+@import "swiper/swiper-bundle.css"; 
 
 /* TailwindCSS yapıları */
 @tailwind base;
@@ -27,7 +27,7 @@
   appearance: none;
   width: 30px;
   min-height: 30px;
-  background-image: url('/slide_icon.svg'); /* Doğru yolu kontrol edin */
+  background-image: url('/slide_icon.svg'); 
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -37,7 +37,7 @@
 .slider::-moz-range-thumb {
   width: 30px;
   height: 30px;
-  background-image: url('/slide_icon.svg'); /* Doğru yolu kontrol edin */
+  background-image: url('/slide_icon.svg'); 
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -47,13 +47,13 @@
 
 /* Arka plan düzeni */
 .bg-layer {
-  background-image: url('/bg_layer.png'); /* Doğru yolu kontrol edin */
+  background-image: url('/bg_layer.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-/* Gövdeye boşluk eklemek için */
+
 body {
   margin: 0;
   padding: 0;
@@ -67,11 +67,11 @@ body {
 }
 
 .swiper-pagination-bullet {
-  background: #ffffff; /* Pagination bullet renk ayarı */
+  background: #ffffff; 
   opacity: 0.7;
 }
 
 .swiper-pagination-bullet-active {
-  background: #ec4899; /* Aktif pagination bullet için renk */
+  background: #ec4899; 
   opacity: 1;
 }

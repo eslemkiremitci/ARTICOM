@@ -56,7 +56,7 @@ const Home = () => {
       // Başarılıysa sonucun tamamını localStorage'a kaydet
       localStorage.setItem('resultData', JSON.stringify(data));
 
-      // Sonuç sayfasına yönlendir
+
       navigate('/result');
 
     } catch (error) {

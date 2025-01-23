@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import { useAuth } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 
-// Mevcut bileşen importları
 import Header from '../components/Header';
 import Steps from '../components/Steps';
 import SliderPage from '../components/Slider';
@@ -15,7 +14,7 @@ const Home = () => {
   const navigate = useNavigate();
   const { getToken } = useAuth(); // Clerk auth
 
-  // Loading ekranını kontrol eden state
+
   const [isLoading, setIsLoading] = useState(false);
 
   // Header bileşenindeki form submit fonksiyonu
@@ -28,7 +27,7 @@ const Home = () => {
       const backgroundDescription = formData.get('backgroundDescription');
       const image = formData.get('image'); // File tipinde (görsel)
 
-      // Basit Kontroller
+   
       if (!productDescription || productDescription.trim().split(' ').length < 3) {
         toast.error('Lütfen en az 3 kelimelik ürün açıklaması girin.');
         return;
@@ -41,7 +40,7 @@ const Home = () => {
       // Token al (Clerk)
       const token = await getToken();
 
-      // Backend'e istek
+      // Backende istek
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/ai/scenario`, {
         method: 'POST',
         headers: { token },
@@ -65,23 +64,18 @@ const Home = () => {
       toast.error(error.message);
 
     } finally {
-      // İster başarılı ister hatalı sonuçlansın, en sonda yüklenmeyi kapat
       setIsLoading(false);
     }
   };
 
-  // Ekranda "isLoading" true ise Loading bileşeni göster
   if (isLoading) {
     return <Loading />;
   }
 
-  // Normalde Home sayfası
   return (
     <div className="w-full flex flex-col">
       {/* Ürün görsel & açıklama formu */}
       <Header onSubmit={handleHeaderSubmit} />
-
-      {/* Kullanıcıya ek kılavuzlar / demo bileşenleri */}
       <Steps />
       <SliderPage />
       <Testimonials />

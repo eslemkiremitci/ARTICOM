@@ -5,12 +5,12 @@ import newImageJpeg from '../assets/example3_2.jpg';
 import newImagePng from '../assets/example3_2.png';
 import secondExampleImageBefore from '../assets/9.jpg';
 import secondExampleImageAfter from '../assets/10.jpg';
-import fourthExampleImageBefore from '../assets/11.jpg'; // Yeni 4. slider için
-import fourthExampleImageAfter from '../assets/12.png'; // Yeni 4. slider için
+import fourthExampleImageBefore from '../assets/11.jpg';
+import fourthExampleImageAfter from '../assets/12.png'; 
 
 // Slider Component
 const Slider = ({ title, description, reverse, images, initialPosition = 50 }) => {
-    const [sliderPosition, setSliderPosition] = useState(initialPosition); // Slider konumu
+    const [sliderPosition, setSliderPosition] = useState(initialPosition); 
 
     const handleSliderChange = (e) => {
         setSliderPosition(e.target.value);
@@ -18,7 +18,6 @@ const Slider = ({ title, description, reverse, images, initialPosition = 50 }) =
 
     return (
         <div className={`flex flex-col lg:flex-row ${reverse ? 'lg:flex-row-reverse' : ''} items-center py-10 lg:py-20`}>
-            {/* Text Section */}
             <div className="w-full lg:w-1/2 px-4 lg:px-10 mb-6 lg:mb-0">
                 <h2 className="text-4xl font-extrabold text-white leading-tight mb-6">
                     {title}
@@ -28,7 +27,6 @@ const Slider = ({ title, description, reverse, images, initialPosition = 50 }) =
                 </p>
             </div>
 
-            {/* Slider Section */}
             <div className="w-full lg:w-1/2 relative overflow-hidden rounded-lg shadow-lg">
                 <img
                     src={images.before}

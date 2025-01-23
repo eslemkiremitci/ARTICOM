@@ -42,7 +42,7 @@ const BuyCredit = () => {
         </div>
         <h1
           className="text-3xl sm:text-3xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent drop-shadow-lg"
-          style={{ lineHeight: "1.3" }} // Satır yüksekliği eklendi
+          style={{ lineHeight: "1.3" }} 
         >
           Size Uygun Planı Seçin
         </h1>

@@ -12,10 +12,8 @@ const Result = () => {
     }
   }, []);
 
-  // Result verisi geldiğinde sayfayı en üste kaydır
   useEffect(() => {
     if (resultData) {
-      // Yumuşak veya anlık kaydırma tercihinize göre behavior'ı ayarlayabilirsiniz
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [resultData]);

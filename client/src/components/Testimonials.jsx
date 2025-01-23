@@ -31,7 +31,7 @@ const Testimonials = () => {
               <div className="flex flex-row items-center gap-4">
                 {/* Image */}
                 <img
-                  src={index === 1 ? logoIcon : imageWoBg} // 2. yorum için logo_icon.svg eklendi
+                  src={index === 1 ? logoIcon : imageWoBg}
                   alt="User"
                   className="w-24 h-24 object-cover rounded-lg"
                 />

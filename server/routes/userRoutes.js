@@ -10,8 +10,6 @@ userRouter.post('/webhooks', clerkWebhooks)
 // Kullanıcı kredi sorgulama endpointi
 userRouter.get('/kredi', authUser, userKredi)
 
-// Razorpay ve Stripe ile ilgili tüm endpointleri kaldırıyoruz.
-// Artık yeni bir test payment endpointimiz var:
 userRouter.post('/pay-test', authUser, paymentTest)
 
 export default userRouter

@@ -10,7 +10,7 @@ const Home = lazy(() => import('./pages/Home'));
 const Result = lazy(() => import('./pages/Result'));
 const BuyCredit = lazy(() => import('./pages/BuyCredit'));
 
-// İsteğe bağlı: Loading sayfasını da route olarak göstermek isterseniz
+
 const LoadingPage = lazy(() => import('./components/Loading'));
 
 function App() {
@@ -23,8 +23,6 @@ function App() {
             <Route index element={<Home />} />
             <Route path="result" element={<Result />} />
             <Route path="buy" element={<BuyCredit />} />
-
-            {/* İsteğe bağlı: /loading rotası */}
             <Route path="loading" element={<LoadingPage />} />
           </Route>
         </Routes>

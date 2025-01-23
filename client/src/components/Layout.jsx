@@ -10,9 +10,7 @@ const Layout = () => {
       {/* Sabit Navbar */}
       <Navbar />
 
-      {/* Ortada Outlet (sayfa içi) */}
       <main className="flex-1 pt-16"> 
-        {/* pt-16 ekledim, çünkü Navbar fixed, 16px/4rem kadar boşluk */}
         <Outlet />
       </main>
 

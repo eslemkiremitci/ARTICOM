@@ -109,12 +109,7 @@ def run_inpainting_with_controlnet(
     return result.images[0]
 
 def process_image_for_controlnet(pil_image: Image.Image, prompt:str, negative_prompt:str) -> Image.Image:
-    """Tüm akışı tek fonksiyonda topladık:
-    1) boyutlandır,
-    2) arka plan kaldır + maske,
-    3) depth map,
-    4) inpainting
-    """
+
     pil_image = load_and_resize_image_pil(pil_image, MAX_WIDTH)
     combined, inpaint_mask = remove_background_and_create_mask(pil_image)
     depth_control_image = create_depth_map(combined)

@@ -3,25 +3,24 @@ import express from 'express';
 import cors from 'cors';
 import connectDB from './configs/mongodb.js';
 
-// Mevcut router’lar
+// Mevcut routerlar
 import userRouter from './routes/userRoutes.js';
 import imageRouter from './routes/imageRoutes.js';
-// Yeni eklediğimiz AI router
 import aiRoutes from './routes/aiRoutes.js';
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-// Orta katmanlar (middleware)
+// middleware
 app.use(express.json());
 app.use(cors());
 
 // API rotaları
 app.use('/api/user', userRouter);
 app.use('/api/image', imageRouter);
-app.use('/api/ai', aiRoutes);  // <--- Önemli!
+app.use('/api/ai', aiRoutes);  
 
-// Basit bir GET
+//  GET
 app.get('/', (req, res) => {
   res.send("API Working");
 });

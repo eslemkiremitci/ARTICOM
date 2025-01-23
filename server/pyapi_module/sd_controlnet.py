@@ -28,7 +28,6 @@ STRENGTH = 1.0
 MAX_WIDTH = 768
 
 def load_and_resize_image_pil(pil_image: Image.Image, max_width: int) -> Image.Image:
-    """Elimizde *zaten* PIL image varsa, boyutlandırma uygula."""
     if pil_image.width > max_width:
         ratio = max_width / pil_image.width
         new_width = max_width

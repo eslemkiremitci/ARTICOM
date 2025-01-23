@@ -9,12 +9,6 @@ import { generateChatGPTOutput } from '../controllers/openaiController.js';
 
 const router = express.Router();
 
-/**
- * Tek istekte:
- *  1) ChatGPT'den "title, description, stablePrompt, negativePrompt" alınır
- *  2) Ardından Python inpaint sürecine giderek 2 adet görsel üretilir
- *  3) Tüm veriler tek JSON cevabında gönderilir
- */
 router.post('/scenario', authUser, upload.single('image'), async (req, res) => {
   try {
     const { productDescription, backgroundDescription } = req.body;
@@ -30,16 +24,12 @@ router.post('/scenario', authUser, upload.single('image'), async (req, res) => {
       return res.json({ success: false, message: 'Resim yüklenmedi.' });
     }
 
-    // 2) ChatGPT -> title, description, stablePrompt, negativePrompt
     const gptResult = await generateChatGPTOutput(productDescription, backgroundDescription);
-    // gptResult: { title, description, stablePrompt, negativePrompt }
 
-    // 3) Orijinal resmi base64'e çevir, Python'a göndereceğiz
     const filePath = req.file.path;
     const imageData = fs.readFileSync(filePath);
     const base64Image = `data:${req.file.mimetype};base64,${imageData.toString('base64')}`;
 
-    // 4) Python inpaint endpointine istek at (2 resim üretelim)
     const pyResponse = await axios.post('http://localhost:5000/generateImages', {
       prompt: gptResult.stablePrompt,
       negative_prompt: gptResult.negativePrompt,
@@ -47,7 +37,7 @@ router.post('/scenario', authUser, upload.single('image'), async (req, res) => {
       num_images: 2
     });
 
-    // Python cevabında hata olup olmadığına bakalım
+
     if (!pyResponse.data) {
       throw new Error('Beklenmeyen yanıt: Python servisi boş data döndürdü.');
     }
@@ -56,13 +46,13 @@ router.post('/scenario', authUser, upload.single('image'), async (req, res) => {
     }
     const generatedImages = pyResponse.data.images; // 2 adet base64 PNG
 
-    // 5) temp klasöründeki dosyayı siliyoruz
+    // 5) temp klasöründeki dosyayı sil
     fs.unlinkSync(filePath);
 
     // 6) Arka plan açıklaması varsa senaryo 2, yoksa 1 diyelim
     const scenarioType = backgroundDescription?.trim() ? 2 : 1;
 
-    // 7) Her şeyi tek JSON cevabında dönüyoruz
+
     return res.json({
       success: true,
       message: 'Senaryo + Inpaint tamamlandı',
@@ -79,11 +69,5 @@ router.post('/scenario', authUser, upload.single('image'), async (req, res) => {
     return res.status(500).json({ success: false, error: error.message });
   }
 });
-
-/**
- * Opsiyonel "inpaint" route
- * Tek adım tercih edildiğinde kullanılmayabilir. 
- */
-// router.post('/inpaint', ... );
 
 export default router;

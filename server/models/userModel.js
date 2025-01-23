@@ -6,7 +6,6 @@ const userSchema = new mongoose.Schema({
     photo: { type: String, required: true },
     firstName: { type: String },
     lastName: { type: String },
-    // Varsayılan kredi değerini 50'ye çıkarıyoruz.
     creditBalance: { type: Number, default: 50 },
 })
 

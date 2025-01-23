@@ -13,7 +13,7 @@ from transformers import DPTForDepthEstimation, DPTFeatureExtractor
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-# Hugging Face token al, yoksa hata
+
 token = os.environ.get("HUGGINGFACE_TOKEN", None)
 if not token:
     raise ValueError("HUGGINGFACE_TOKEN ortam değişkeni ayarlanmadı.")

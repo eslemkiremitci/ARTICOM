@@ -6,7 +6,7 @@ ARTICOM, **e-ticaret dünyasında ürün görsellerini optimize etmek** ve **dah
 
 ## 🎥 Demo Videosu
 
-Projenin nasıl çalıştığını detaylı şekilde görmek için hazırladığım demo videosunu izleyebilirsiniz:  
+
 [![YouTube Demo](http://img.youtube.com/vi/kfcDh89I4D8/0.jpg)](https://youtu.be/kfcDh89I4D8)
 
 *(Videoyu izlemek için yukarıdaki görsele veya bağlantıya tıklayabilirsiniz.)*

@@ -32,12 +32,10 @@ Bu sayede rekabetin yoğun olduğu çevrimiçi alışveriş ortamında, ürünle
    - Ürün/tema bilgisine göre kısa sürede zengin metin hazırlama.
 
 3. **⚡ Kullanıcı Dostu Deneyim**  
-   - Modern ve responsive arayüz sayesinde her cihazdan kolay kullanım.  
-   - İşlem adımlarını gerçek zamanlı izleyerek anında sonuç alma.
-
+   - Modern ve responsive arayüz sayesinde her cihazdan kolay kullanım.
+   - 
 4. **🔗 Paylaşım ve Dışa Aktarım**  
    - Oluşturulan görselleri indirip çeşitli platformlarda paylaşma.  
-   - Farklı formatlarda çıktı alarak e-ticaret sitelerine hızlı entegrasyon.
 
 ---
 
@@ -49,27 +47,6 @@ Bu sayede rekabetin yoğun olduğu çevrimiçi alışveriş ortamında, ürünle
 | **Server (API)**   | Express.js, Mongoose                      |
 | **Python Modülü**  | FastAPI, **Stable Diffusion**, ControlNet |
 | **Veritabanı**     | MongoDB                                   |
-
----
-
-## 🖼️ Ekran Görüntüleri
-
-### Ana Sayfa
-![Ana Sayfa](screenshots/homepage.png)
-
-### Görsel Yükleme
-![Görsel Yükleme](screenshots/upload.png)
-
-### İşleme Süreci
-![İşleme Süreci](screenshots/loading.png)
-
-### Sonuç Sayfası
-![Sonuç Sayfası](screenshots/result.png)
-
-### Kullanıcı Profili
-![Kullanıcı Profili](screenshots/profile.png)
-
-*(Ekran görüntüleri örnektir; kendi projenizdeki dizin isimlerine göre düzenleyebilirsiniz.)*
 
 ---
 

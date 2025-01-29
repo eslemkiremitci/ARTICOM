@@ -1,41 +1,54 @@
 # ARTICOM: Yapay Zeka Destekli Ürün Görsel Optimizasyonu ve İçerik Yönetimi
 
-ARTICOM, e-ticaret dünyasında ürün görsellerini optimize etmek ve daha etkili içerikler üretmek için geliştirilmiş, yapay zeka destekli bir platformdur. Proje, kullanıcıların görsel estetiği artırılmış ürün sunumları yapmasını sağlayarak rekabet avantajı sunmayı hedefler.
+ARTICOM, **e-ticaret dünyasında ürün görsellerini optimize etmek** ve **daha etkili içerikler** üretmek amacıyla geliştirilmiş, yapay zeka destekli bir platformdur. Özellikle **Stable Diffusion**, **ControlNet** ve **MERN Stack** (MongoDB, Express.js, React.js, Node.js) gibi teknolojileri bir araya getirerek; kullanıcıların görsel kalitesi yüksek, dikkat çekici ürün sunumları hazırlamasına yardımcı olur.
+
+---
+
+## 🎥 Demo Videosu
+
+Projenin nasıl çalıştığını detaylı şekilde görmek için hazırladığım demo videosunu izleyebilirsiniz:  
+[![YouTube Demo](http://img.youtube.com/vi/kfcDh89I4D8/0.jpg)](https://youtu.be/kfcDh89I4D8)
+
+*(Videoyu izlemek için yukarıdaki görsele veya bağlantıya tıklayabilirsiniz.)*
 
 ---
 
 ## 🚀 Proje Hakkında
-ARTICOM, ürün görsellerinizin profesyonel bir şekilde optimize edilmesini ve içerik üretimini yapay zeka teknolojileriyle destekler. Geliştirilen bu platform, görsellerinizin arka planlarını kaldırır, derinlik haritaları oluşturur ve yüksek kaliteli görseller üretir. Ayrıca, kullanıcı dostu arayüzüyle işlem süreçlerini kolayca yönetmenizi sağlar.
+
+ARTICOM, e-ticaret platformlarında ürün görsellerinizi **otomatik olarak** düzenler, arka planları temizler ve derinlik haritaları oluşturarak **yüksek kaliteli** sahneler üretir. Ayrıca yapay zekâ destekli **metin oluşturma** özelliğiyle, SEO uyumlu açıklamalar ve başlıklar hazırlamanıza imkan tanır.
+
+Bu sayede rekabetin yoğun olduğu çevrimiçi alışveriş ortamında, ürünlerinizi **estetik ve profesyonel** bir biçimde sunabilirsiniz.
 
 ---
 
 ## 🌟 Öne Çıkan Özellikler
 
-1. **📸 Görsel Optimizasyon**
-   - Ürün görsellerinin arka planını yapay zeka ile kaldırır.
-   - Derinlik haritası ve inpainting ile arka planları yeniden tasarlar.
+1. **📸 Görsel Optimizasyon**  
+   - Ürün görsellerinin arka planını yapay zeka ile otomatik kaldırma.  
+   - **Stable Diffusion** ve **ControlNet** ile yüksek çözünürlükte, gerçekçi arka plan oluşturma.
 
-2. **📝 İçerik Yönetimi**
-   - Ürün açıklamaları ve arka plan bilgilerinden etkileyici içerikler oluşturur.
+2. **📝 İçerik Yönetimi**  
+   - GPT-3.5 API ile **SEO uyumlu** başlık ve açıklamalar üretme.  
+   - Ürün/tema bilgisine göre kısa sürede zengin metin hazırlama.
 
-3. **⚡ Kullanıcı Dostu Deneyim**
-   - Modern ve responsive tasarımı ile her cihazda kusursuz çalışma.
-   - Gerçek zamanlı görsel önizleme ve sonuç alma.
+3. **⚡ Kullanıcı Dostu Deneyim**  
+   - Modern ve responsive arayüz sayesinde her cihazdan kolay kullanım.  
+   - İşlem adımlarını gerçek zamanlı izleyerek anında sonuç alma.
 
-4. **🔗 Paylaşım ve Dışa Aktarım**
-   - Görselleri indirip paylaşabilirsiniz.
-   - Görsel çıktıları özelleştirilebilir formatlarda sunar.
+4. **🔗 Paylaşım ve Dışa Aktarım**  
+   - Oluşturulan görselleri indirip çeşitli platformlarda paylaşma.  
+   - Farklı formatlarda çıktı alarak e-ticaret sitelerine hızlı entegrasyon.
 
 ---
 
 ## 🛠️ Teknolojiler
 
-| Alan            | Teknoloji                              |
-|-----------------|---------------------------------------|
-| **Client**      | React, TailwindCSS, Swiper.js         |
-| **Server**      | Express.js, Mongoose                  |
-| **Python Modülü**| FastAPI, Stable Diffusion, ControlNet |
-| **Veritabanı**  | MongoDB                               |
+| Alan               | Teknoloji                                 |
+|--------------------|-------------------------------------------|
+| **Client (UI)**    | React, TailwindCSS, Swiper.js             |
+| **Server (API)**   | Express.js, Mongoose                      |
+| **Python Modülü**  | FastAPI, **Stable Diffusion**, ControlNet |
+| **Veritabanı**     | MongoDB                                   |
 
 ---
 
@@ -56,104 +69,126 @@ ARTICOM, ürün görsellerinizin profesyonel bir şekilde optimize edilmesini ve
 ### Kullanıcı Profili
 ![Kullanıcı Profili](screenshots/profile.png)
 
+*(Ekran görüntüleri örnektir; kendi projenizdeki dizin isimlerine göre düzenleyebilirsiniz.)*
+
 ---
 
 ## 📖 Kurulum
 
-### 1. Gerekli Bağımlılıkları Yükleyin
-```bash
-# Client için
-cd client
-npm install
+1. **Projeyi Klonlayın**  
+   ```bash
+   git clone https://github.com/kullaniciAdiniz/ARTICOM.git
+   cd ARTICOM
+   ```
 
-# Server için
-cd server
-npm install
+2. **Bağımlılıkları Yükleyin**  
+   ```bash
+   # Client
+   cd client
+   npm install
 
-# Python modülü için
-cd pyapi_module
-pip install -r requirements.txt
-```
+   # Server
+   cd ../server
+   npm install
 
-### 2. Ortam Değişkenlerini Ayarlayın
-`.env` dosyalarını aşağıdaki gibi doldurun:
-- **Client**: `VITE_BACKEND_URL`, `VITE_CLERK_PUBLISHABLE_KEY`
-- **Server**: `MONGODB_URI`, `OPENAI_API_KEY`, `HUGGINGFACE_TOKEN`
+   # Python Modülü
+   cd ../pyapi_module
+   pip install -r requirements.txt
+   ```
 
-### 3. Uygulamayı Başlatın
-```bash
-# Client
-cd client
-npm run dev
+3. **.env Dosyalarını Düzenleyin**  
+   - **Client**: `VITE_BACKEND_URL`, `VITE_CLERK_PUBLISHABLE_KEY` vb.
+   - **Server**: `MONGODB_URI`, `OPENAI_API_KEY`, `HUGGINGFACE_TOKEN` vb.
+   - **pyapi_module**: Ortam değişkeni olarak `HUGGINGFACE_TOKEN` vb.
 
-# Server
-cd server
-npm run server
+4. **Uygulamayı Başlatın**  
+   ```bash
+   # Client
+   cd client
+   npm run dev
 
-# Python Modülü
-cd pyapi_module
-uvicorn main:app --reload
-```
+   # Server
+   cd ../server
+   npm run server
 
----
+   # Python Modülü
+   cd ../pyapi_module
+   uvicorn main:app --reload
+   ```
 
-## 🔧 Kullanım
-
-1. **Ana Sayfa**:
-   - Proje hakkında temel bilgileri içerir.
-   - "Oluşturmaya Başla" butonu ile işleme başlama imkanı sunar.
-
-2. **Ürün Görsellerini Optimize Etme**:
-   - Ürün açıklaması ve arka plan bilgisi girilir.
-   - Görsel yüklenir ve işleme başlatılır.
-
-3. **Sonuç Sayfası**:
-   - İşlenmiş görseller ve üretilen içerikler görüntülenir.
-   - Görselleri indir veya paylaş seçenekleri sunar.
-
-4. **Kredi Yönetimi**:
-   - Kullanıcılar kredi satın alarak daha fazla işlem yapabilir.
+5. **Tarayıcıdan Erişim**  
+   - React Client: [http://localhost:5173](http://localhost:5173)  
+   - Node.js Server: [http://localhost:3000](http://localhost:3000)  
+   - FastAPI (Python): [http://localhost:5000/docs](http://localhost:5000/docs)
 
 ---
 
-## 📜 API Belgeleri
+## 🔧 Kullanım Adımları
 
-### 1. **/generateImages (POST)**
-- **Açıklama**: Görsel işleme ve varyasyon üretme.
-- **Girdiler**:
-  ```json
-  {
-      "prompt": "Ürün açıklaması",
-      "negative_prompt": "İstenmeyen özellikler",
-      "image_base64": "Base64 kodlanmış görsel",
+1. **Ana Sayfa**:  
+   - Proje ve yapay zekâ modülleri hakkında özet bilgiye ulaşabilirsiniz.
+
+2. **Görsel Yükleme**:  
+   - Ürün açıklaması ve arka plan teması girin, ardından ürüne ait resmi yükleyin.
+
+3. **İşleme Süreci**:  
+   - **Stable Diffusion** ve **ControlNet** modelleri devreye girerek arka planınızı oluşturur/temizler.
+   - GPT-3.5 API, SEO uyumlu içerikleri otomatik hazırlar.
+
+4. **Sonuç Sayfası**:  
+   - Üretilen görsel ve metinleri görüntüleyin, dilediğiniz formatta **indir** ve paylaşın.
+
+5. **Kredi Yönetimi** (Opsiyonel):  
+   - Belirli sayıda ücretsiz kullanım. Ek işlem için kredi satın alabilirsiniz.
+
+---
+
+## 📜 API Belgeleri (Örnek)
+
+- **/api/ai/scenario (POST)**  
+  - **Açıklama**: Ürün açıklaması ve görseli alarak arka plan temizleme, inpainting ve metin oluşturma süreçlerini yönetir.  
+  - **Girdi**: Form-Data (image, productDescription, backgroundDescription)  
+  - **Çıktı**: `{ "images": [...], "title": "...", "description": "..." }`
+
+- **/generateImages (POST)**  *(Python tarafı)*  
+  - **Açıklama**: Görseli base64 formatında alır, ControlNet ile işleyerek yeni görseller üretir.  
+  - **Girdi**:
+    ```json
+    {
+      "prompt": "English prompt text",
+      "negative_prompt": "things to avoid",
+      "image_base64": "base64-encoded image",
       "num_images": 2
-  }
-  ```
-- **Çıktılar**:
-  ```json
-  {
-      "images": ["Base64 kodlu çıktı görseller"]
-  }
-  ```
+    }
+    ```
+  - **Çıktı**:
+    ```json
+    {
+      "images": ["Base64 encoded result1", "Base64 encoded result2"]
+    }
+    ```
 
 ---
 
 ## 🎯 Gelecekteki Geliştirmeler
-- 🌐 Daha fazla dil desteği.
-- 📱 Mobil uygulama entegrasyonu.
-- 🔗 Sosyal medya paylaşım özellikleri.
+- **Çoklu Dil Desteği**: Hem arayüz hem de içerik üretimi için farklı diller eklenmesi.  
+- **Mobil Uygulama**: iOS/Android entegrasyonu.  
+- **Sosyal Medya Paylaşımı**: Üretilen görselleri tek tıkla sosyal platformlara yükleme.
 
 ---
 
-## 🤝 Katkıda Bulunun
-Katkıda bulunmak için lütfen bir **pull request** gönderin veya bir **issue** oluşturun.
+## 🤝 Katkıda Bulunma
+Projenin gelişimi için **pull request** veya **issue** açabilirsiniz. Düzenlemeler ve öneriler her zaman memnuniyetle karşılanır.
 
 ---
 
 ## 📜 Lisanslar
-- **MIT Lisansı**: React, TailwindCSS, Swiper.js, Express.js, Mongoose, FastAPI, rembg, Multer, Axios
-- **Apache 2.0 Lisansı**: ControlNet, Hugging Face Transformers, 
-- **CreativeML Open RAIL-M Lisansı**: Stable Diffusion
-- **BSD-2-Clause Lisansı**: dotenv
+- **React**, **TailwindCSS**, **Swiper.js**, **Express.js**, **Mongoose**, **FastAPI**, **rembg**, **Multer**, **Axios**: MIT Lisansı  
+- **Stable Diffusion**, **ControlNet**: [CreativeML Open RAIL-M Lisansı](https://github.com/Stability-AI/stablediffusion/blob/main/LICENSE) / Apache 2.0  
+- **dotenv**: BSD-2-Clause  
 
+Herhangi bir sorunuz veya öneriniz olursa, proje deposunda yeni bir **issue** oluşturabilir ya da bana ulaşabilirsiniz!
 
+---
+
+*Teşekkürler ve iyi çalışmalar!*

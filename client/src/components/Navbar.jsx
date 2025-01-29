@@ -56,7 +56,7 @@ const Navbar = () => {
                     className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white px-5 py-2 sm:px-7 sm:py-3 rounded-full hover:scale-105 transition-transform duration-300 shadow-md"
                 >
                     Hadi Başla
-                    <img className="w-4 sm:w-5" src={assets.arrow_icon} alt="Arrow Icon" />
+                   
                 </button>
             )}
         </div>

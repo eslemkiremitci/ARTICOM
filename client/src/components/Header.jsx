@@ -5,6 +5,7 @@ import 'swiper/css/autoplay';
 import 'swiper/css/thumbs';
 import { Autoplay, Thumbs } from 'swiper/modules';
 
+
 const Header = ({ onSubmit }) => {
   const [productInfo, setProductInfo] = useState('');
   const [backgroundInfo, setBackgroundInfo] = useState('');
@@ -42,12 +43,15 @@ const Header = ({ onSubmit }) => {
       <div className="flex flex-col lg:flex-row items-start justify-between gap-y-16 lg:gap-x-16">
         {/* Sol Taraf */}
         <div className="flex-1">
-          <h1 className="text-5xl xl:text-7xl font-extrabold leading-tight mb-12 text-center lg:text-left">
-            Ürünlerinizi <br />
-            <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-              Baştan Yaratın!
-            </span>
-          </h1>
+  <h1 className="text-4xl md:text-6xl font-extrabold leading-[2] mb-6 text-center lg:text-left">
+    Yapay Zekâ ile
+    <br />
+    <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+      Ürününüzün Arka Planını Değiştirin!
+    </span>
+  </h1>
+
+
 
           <div className="mt-6 space-y-6">
             <input
@@ -142,6 +146,7 @@ const Header = ({ onSubmit }) => {
               ))}
             </Swiper>
 
+            {/* Yüklenen Görselin Önizlemesi */}
             {selectedImage && (
               <div className="flex flex-col items-center mt-8 bg-white/10 backdrop-blur-md rounded-lg p-4 w-full max-w-md mx-auto">
                 <img

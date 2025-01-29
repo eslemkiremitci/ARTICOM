@@ -54,7 +54,7 @@ Bu sayede rekabetin yoğun olduğu çevrimiçi alışveriş ortamında, ürünle
 
 1. **Projeyi Klonlayın**  
    ```bash
-   git clone https://github.com/kullaniciAdiniz/ARTICOM.git
+   https://github.com/eslemkiremitci/ARTICOM.git
    cd ARTICOM
    ```
 

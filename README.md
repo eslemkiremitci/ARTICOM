@@ -90,33 +90,13 @@ Bu sayede rekabetin yoğun olduğu çevrimiçi alışveriş ortamında, ürünle
 
    # Python Modülü
    cd ../pyapi_module
-   uvicorn main:app --reload
+   uvicorn main:app --host 0.0.0.0 --port 5000 --reload
    ```
 
 5. **Tarayıcıdan Erişim**  
    - React Client: [http://localhost:5173](http://localhost:5173)  
    - Node.js Server: [http://localhost:3000](http://localhost:3000)  
    - FastAPI (Python): [http://localhost:5000/docs](http://localhost:5000/docs)
-
----
-
-## 🔧 Kullanım Adımları
-
-1. **Ana Sayfa**:  
-   - Proje ve yapay zekâ modülleri hakkında özet bilgiye ulaşabilirsiniz.
-
-2. **Görsel Yükleme**:  
-   - Ürün açıklaması ve arka plan teması girin, ardından ürüne ait resmi yükleyin.
-
-3. **İşleme Süreci**:  
-   - **Stable Diffusion** ve **ControlNet** modelleri devreye girerek arka planınızı oluşturur/temizler.
-   - GPT-3.5 API, SEO uyumlu içerikleri otomatik hazırlar.
-
-4. **Sonuç Sayfası**:  
-   - Üretilen görsel ve metinleri görüntüleyin, dilediğiniz formatta **indir** ve paylaşın.
-
-5. **Kredi Yönetimi** (Opsiyonel):  
-   - Belirli sayıda ücretsiz kullanım. Ek işlem için kredi satın alabilirsiniz.
 
 ---
 
@@ -147,13 +127,6 @@ Bu sayede rekabetin yoğun olduğu çevrimiçi alışveriş ortamında, ürünle
 
 ---
 
-## 🎯 Gelecekteki Geliştirmeler
-- **Çoklu Dil Desteği**: Hem arayüz hem de içerik üretimi için farklı diller eklenmesi.  
-- **Mobil Uygulama**: iOS/Android entegrasyonu.  
-- **Sosyal Medya Paylaşımı**: Üretilen görselleri tek tıkla sosyal platformlara yükleme.
-
----
-
 ## 🤝 Katkıda Bulunma
 Projenin gelişimi için **pull request** veya **issue** açabilirsiniz. Düzenlemeler ve öneriler her zaman memnuniyetle karşılanır.
 
@@ -164,7 +137,6 @@ Projenin gelişimi için **pull request** veya **issue** açabilirsiniz. Düzenl
 - **Stable Diffusion**, **ControlNet**: [CreativeML Open RAIL-M Lisansı](https://github.com/Stability-AI/stablediffusion/blob/main/LICENSE) / Apache 2.0  
 - **dotenv**: BSD-2-Clause  
 
-Herhangi bir sorunuz veya öneriniz olursa, proje deposunda yeni bir **issue** oluşturabilir ya da bana ulaşabilirsiniz!
 
 ---
 

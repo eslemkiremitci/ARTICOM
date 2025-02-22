@@ -130,12 +130,7 @@ Bu sayede rekabetin yoğun olduğu çevrimiçi alışveriş ortamında, ürünle
 ## 🤝 Katkıda Bulunma
 Projenin gelişimi için **pull request** veya **issue** açabilirsiniz. Düzenlemeler ve öneriler her zaman memnuniyetle karşılanır.
 
----
 
-## 📜 Lisanslar
-- **React**, **TailwindCSS**, **Swiper.js**, **Express.js**, **Mongoose**, **FastAPI**, **rembg**, **Multer**, **Axios**: MIT Lisansı  
-- **Stable Diffusion**, **ControlNet**: [CreativeML Open RAIL-M Lisansı](https://github.com/Stability-AI/stablediffusion/blob/main/LICENSE) / Apache 2.0  
-- **dotenv**: BSD-2-Clause  
 
 
 ---

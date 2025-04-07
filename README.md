@@ -99,33 +99,6 @@ Bu sayede rekabetin yoğun olduğu çevrimiçi alışveriş ortamında, ürünle
 
 ---
 
-## 📜 API Belgeleri (Örnek)
-
-- **/api/ai/scenario (POST)**  
-  - **Açıklama**: Ürün açıklaması ve görseli alarak arka plan temizleme, inpainting ve metin oluşturma süreçlerini yönetir.  
-  - **Girdi**: Form-Data (image, productDescription, backgroundDescription)  
-  - **Çıktı**: `{ "images": [...], "title": "...", "description": "..." }`
-
-- **/generateImages (POST)**  *(Python tarafı)*  
-  - **Açıklama**: Görseli base64 formatında alır, ControlNet ile işleyerek yeni görseller üretir.  
-  - **Girdi**:
-    ```json
-    {
-      "prompt": "English prompt text",
-      "negative_prompt": "things to avoid",
-      "image_base64": "base64-encoded image",
-      "num_images": 2
-    }
-    ```
-  - **Çıktı**:
-    ```json
-    {
-      "images": ["Base64 encoded result1", "Base64 encoded result2"]
-    }
-    ```
-
----
-
 ## 🤝 Katkıda Bulunma
 Projenin gelişimi için **pull request** veya **issue** açabilirsiniz. Düzenlemeler ve öneriler her zaman memnuniyetle karşılanır.
 

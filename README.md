@@ -70,7 +70,6 @@ Bu sayede rekabetin yoğun olduğu çevrimiçi alışveriş ortamında, ürünle
 
    # Python Modülü
    cd ../pyapi_module
-   pip install -r requirements.txt
    ```
 
 3. **.env Dosyalarını Düzenleyin**  
